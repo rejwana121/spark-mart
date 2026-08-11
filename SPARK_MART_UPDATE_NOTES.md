@@ -45,7 +45,7 @@ Seller/admin:
 
 ## Note
 
-The project uses H2 file database with `spring.jpa.hibernate.ddl-auto=update`. New order item image fields will be added automatically when the app starts.
+The project uses MySQL (XAMPP) with `spring.jpa.hibernate.ddl-auto=update`. New order item image fields will be added automatically when the app starts.
 
 ## Refinement update
 - Moved Help & Support, Become a Seller, Track Order, and বাংলা / English from the orange top utility bar into the main navbar.
