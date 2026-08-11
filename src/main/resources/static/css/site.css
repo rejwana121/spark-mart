@@ -1037,6 +1037,12 @@ button:disabled,
     border-radius: 8px;
 }
 
+.form-grid {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
 .stacked-form {
     display: grid;
     gap: 14px;
