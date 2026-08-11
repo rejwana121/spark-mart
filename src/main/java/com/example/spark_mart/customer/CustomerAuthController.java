@@ -30,9 +30,11 @@ public class CustomerAuthController {
     public String doLogin(@RequestParam String email, @RequestParam String password, HttpSession session, Model model) {
         return customerService.authenticate(email, password)
                 .map(customer -> {
+                    session.removeAttribute(com.example.spark_mart.admin.AdminService.SESSION_ADMIN);
+                    session.removeAttribute(com.example.spark_mart.admin.AdminService.SESSION_SELLER);
                     customerService.login(session, customer);
                     if (customer.isSeller()) {
-                        session.setAttribute(com.example.spark_mart.admin.AdminService.SESSION_ADMIN, customer.getEmail());
+                        session.setAttribute(com.example.spark_mart.admin.AdminService.SESSION_SELLER, customer.getEmail());
                     }
                     return "redirect:/";
                 })
@@ -81,8 +83,9 @@ public class CustomerAuthController {
         try {
             CustomerUser seller = customerService.registerSeller(storeName, name, email, phone, password, confirmPassword,
                     address, area);
+            session.removeAttribute(com.example.spark_mart.admin.AdminService.SESSION_ADMIN);
             customerService.login(session, seller);
-            session.setAttribute(com.example.spark_mart.admin.AdminService.SESSION_ADMIN, seller.getEmail());
+            session.setAttribute(com.example.spark_mart.admin.AdminService.SESSION_SELLER, seller.getEmail());
             return "redirect:/admin/dashboard";
         } catch (IllegalArgumentException ex) {
             model.addAttribute("mode", "seller");
@@ -95,6 +98,7 @@ public class CustomerAuthController {
     public String logout(HttpSession session) {
         customerService.logout(session);
         session.removeAttribute(com.example.spark_mart.admin.AdminService.SESSION_ADMIN);
+        session.removeAttribute(com.example.spark_mart.admin.AdminService.SESSION_SELLER);
         return "redirect:/";
     }
 

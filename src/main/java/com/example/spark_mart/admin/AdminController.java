@@ -39,25 +39,20 @@ public class AdminController {
     public String doLogin(@RequestParam String username, @RequestParam String password, HttpSession session,
             Model model) {
         if (adminService.authenticate(username, password)) {
+            session.removeAttribute(com.example.spark_mart.customer.CustomerService.SESSION_CUSTOMER_ID);
+            session.removeAttribute(AdminService.SESSION_SELLER);
             session.setAttribute(AdminService.SESSION_ADMIN, username);
             return "redirect:/admin/dashboard";
         }
-        return customerService.authenticate(username, password)
-                .filter(com.example.spark_mart.customer.CustomerUser::isSeller)
-                .map(seller -> {
-                    customerService.login(session, seller);
-                    session.setAttribute(AdminService.SESSION_ADMIN, seller.getEmail());
-                    return "redirect:/admin/dashboard";
-                })
-                .orElseGet(() -> {
-                    model.addAttribute("error", "Invalid seller email/password or seller access is not active.");
-                    return "admin/login";
-                });
+        model.addAttribute("error", "Invalid username or password.");
+        return "admin/login";
     }
 
     @PostMapping("/admin/logout")
     public String logout(HttpSession session) {
         session.removeAttribute(AdminService.SESSION_ADMIN);
+        session.removeAttribute(AdminService.SESSION_SELLER);
+        session.removeAttribute(com.example.spark_mart.customer.CustomerService.SESSION_CUSTOMER_ID);
         return "redirect:/";
     }
 

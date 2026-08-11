@@ -44,17 +44,17 @@ public class GlobalModelAdvice {
 
     @ModelAttribute("sellerLoggedIn")
     public boolean sellerLoggedIn(HttpSession session) {
-        return session.getAttribute(AdminService.SESSION_ADMIN) != null;
+        return session.getAttribute(AdminService.SESSION_SELLER) != null;
     }
 
     @ModelAttribute("sellerEmail")
     public Object sellerEmail(HttpSession session) {
-        return session.getAttribute(AdminService.SESSION_ADMIN);
+        return session.getAttribute(AdminService.SESSION_SELLER);
     }
 
     @ModelAttribute("currentSeller")
     public Object currentSeller(HttpSession session) {
-        Object email = session.getAttribute(AdminService.SESSION_ADMIN);
+        Object email = session.getAttribute(AdminService.SESSION_SELLER);
         if (email instanceof String sellerEmail) {
             return customerService.findByEmail(sellerEmail).filter(com.example.spark_mart.customer.CustomerUser::isSeller)
                     .orElse(null);

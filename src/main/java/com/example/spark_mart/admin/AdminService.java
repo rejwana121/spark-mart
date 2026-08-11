@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminService {
     public static final String SESSION_ADMIN = "sparkMartAdmin";
+    public static final String SESSION_SELLER = "sparkMartSeller";
 
     private final String username;
     private final String encodedPassword;
