@@ -145,6 +145,7 @@ public class CatalogService {
         return productRepository.save(product);
     }
 
+    @Transactional
     public void update(long id, ProductForm form) {
         productRepository.findById(id).ifPresent(product -> {
             Category category = findCategory(form.getCategorySlug()).orElse(categories().get(0));

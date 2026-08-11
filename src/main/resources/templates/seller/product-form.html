@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/seller :: head('Product Form | Spark Mart Seller')}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="admin-body">
+<aside th:replace="~{fragments/seller :: sidebar}"></aside>
+<main class="admin-main">
+    <div class="admin-title">
+        <div>
+            <h1 th:text="${productId == null ? 'New Product' : 'Edit Product'}">Product</h1>
+            <p>Maintain the public catalog and internal on-demand flags.</p>
+        </div>
+    </div>
+    <form th:action="@{${formAction}}" th:object="${productForm}" method="post" class="stacked-form admin-form">
+        <label>Name<input th:field="*{name}" required></label>
+        <label>Category
+            <select th:field="*{categorySlug}" required>
+                <option th:each="category : ${categories}" th:value="${category.slug()}" th:text="${category.name()}">
+                    Category
+                </option>
+            </select>
+        </label>
+        <label>Price<input th:field="*{price}" type="number" min="0" step="0.01" required></label>
+        <label>Stock<input th:field="*{stock}" type="number" min="0" required></label>
+        <label>Rating<input th:field="*{rating}" type="number" min="0" max="5" step="0.1" required></label>
+        <label>Image URL<input th:field="*{imageUrl}" type="url" required></label>
+        <label>Description<textarea th:field="*{description}" required></textarea></label>
+        <label class="check-row checkout-consent">
+            <input th:field="*{aiSuggested}" type="checkbox">
+            <span>Review-required on-demand item</span>
+        </label>
+
+        <label class="mb-3 d-block">
+            Tags
+            <select th:field="*{tagIds}" class="form-select" multiple size="4">
+                <option th:each="tag : ${tags}" th:value="${tag.id}" th:text="${tag.name}">Tag</option>
+            </select>
+            <small class="form-text text-muted">Hold Ctrl / Cmd to select more than one.</small>
+        </label>
+
+        <div class="form-actions">
+            <button class="button primary" type="submit" aria-label="Save product" title="Save product"><i class="fa-solid fa-floppy-disk"></i><span>Save Product</span></button>
+            <a class="button ghost" th:href="@{/seller/products}" aria-label="Cancel" title="Cancel"><i class="fa-solid fa-xmark"></i><span>Cancel</span></a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

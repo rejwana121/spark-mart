@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/seller :: head('Orders | Spark Mart Seller')}"></head>
+<body class="admin-body">
+<aside th:replace="~{fragments/seller :: sidebar}"></aside>
+<main class="admin-main">
+    <div class="admin-title">
+        <div>
+            <h1>Orders</h1>
+            <p>Payment and fulfillment statuses are managed separately.</p>
+        </div>
+    </div>
+    <p class="empty-state" th:if="${#lists.isEmpty(orders)}">No orders yet.</p>
+    <div class="table-wrap" th:unless="${#lists.isEmpty(orders)}">
+        <table>
+            <thead>
+            <tr><th>Order</th><th>Customer</th><th>Address</th><th>Items</th><th>Total</th><th>Payment</th><th>Statuses</th><th>Update</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orders}">
+                <td data-label="Order">
+                    <strong th:text="${order.orderNumber}">Order</strong>
+                    <span th:text="${#temporals.format(order.createdAt, 'dd MMM yyyy HH:mm')}">Date</span>
+                </td>
+                <td data-label="Customer">
+                    <strong th:text="${order.name}">Name</strong>
+                    <span th:text="${order.email}">Email</span>
+                    <span th:text="${order.phone}">Phone</span>
+                </td>
+                <td data-label="Address" th:text="${order.address}">Address</td>
+                <td data-label="Items">
+                    <div th:each="line : ${order.lines}">
+                        <span th:text="${line.quantity() + ' x ' + line.name()}">Line</span>
+                    </div>
+                </td>
+                <td data-label="Total" th:text="'Tk ' + ${order.total}">Tk 0</td>
+                <td data-label="Payment">
+                    <span th:text="${order.paymentLabel()}">Payment</span>
+                    <span th:text="${order.paymentStatus}">Payment Status</span>
+                </td>
+                <td data-label="Statuses">
+                    <span th:text="${order.fulfillmentStatus}">Fulfillment</span>
+                </td>
+                <td data-label="Update">
+                    <form th:action="@{/seller/orders/{orderNumber}/status(orderNumber=${order.orderNumber})}"
+                          method="post" class="status-form">
+                        <select name="paymentStatus">
+                            <option th:selected="${order.paymentStatus == 'CONFIRMED'}">CONFIRMED</option>
+                            <option th:selected="${order.paymentStatus == 'PAID'}">PAID</option>
+                            <option th:selected="${order.paymentStatus == 'PENDING'}">PENDING</option>
+                            <option th:selected="${order.paymentStatus == 'FAILED'}">FAILED</option>
+                            <option th:selected="${order.paymentStatus == 'REFUNDED'}">REFUNDED</option>
+                        </select>
+                        <select name="fulfillmentStatus">
+                            <option th:selected="${order.fulfillmentStatus == 'Order Sent'}">Order Sent</option>
+                            <option th:selected="${order.fulfillmentStatus == 'Approved'}">Approved</option>
+                            <option th:selected="${order.fulfillmentStatus == 'Rejected'}">Rejected</option>
+                            <option th:selected="${order.fulfillmentStatus == 'Processing'}">Processing</option>
+                            <option th:selected="${order.fulfillmentStatus == 'Delivered'}">Delivered</option>
+                        </select>
+                        <button type="submit" aria-label="Save status"><i class="fa-solid fa-check"></i><span>Save</span></button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

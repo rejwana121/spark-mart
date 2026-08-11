@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#173f35">
+    <title th:text="${title}">Spark Mart Seller</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<aside class="admin-sidebar professional-admin-sidebar" th:fragment="sidebar">
+    <a class="brand store-brand admin-brand" th:href="@{/seller/dashboard}">
+        <span class="brand-mark">S</span>
+        <span class="brand-text">
+            <span class="brand-word">Spark Mart</span>
+            <span class="brand-caption">Seller Center</span>
+        </span>
+    </a>
+    <nav>
+        <a th:href="@{/seller/dashboard}"><i class="fa-solid fa-gauge-high"></i><span>Dashboard</span></a>
+        <a th:href="@{/seller/products}"><i class="fa-solid fa-boxes-stacked"></i><span>Products</span></a>
+        <a th:href="@{/seller/categories}"><i class="fa-solid fa-layer-group"></i><span>Categories</span></a>
+        <a th:href="@{/seller/orders}"><i class="fa-solid fa-clipboard-list"></i><span>Orders</span></a>
+        <a th:href="@{/seller/inventory}"><i class="fa-solid fa-warehouse"></i><span>Inventory</span></a>
+        <a th:href="@{/}"><i class="fa-solid fa-store"></i><span>Storefront</span></a>
+    </nav>
+    <form th:action="@{/seller/logout}" method="post">
+        <button class="button ghost wide" type="submit"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
+    </form>
+</aside>
+</body>
+</html>
