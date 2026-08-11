@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/seller :: head('Products | Spark Mart Seller')}"></head>
+<body class="admin-body">
+<aside th:replace="~{fragments/seller :: sidebar}"></aside>
+<main class="admin-main">
+    <div class="admin-title">
+        <div>
+            <h1>Products</h1>
+            <p>Catalog, stock, and on-demand item controls.</p>
+        </div>
+        <a class="button primary admin-create-btn" th:href="@{/seller/products/new}" aria-label="New product" title="New product"><i class="fa-solid fa-plus"></i><span>New Product</span></a>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Rating</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${products}">
+                <td data-label="Product">
+                    <div class="table-product">
+                        <img th:src="${product.imageUrl}" th:alt="${product.name}">
+                        <div>
+                            <strong th:text="${product.name}">Product</strong>
+                            <span th:if="${product.aiSuggested}">AI / on-demand</span>
+                        </div>
+                    </div>
+                </td>
+                <td data-label="Category" th:text="${product.categoryName}">Category</td>
+                <td data-label="Price" th:text="'Tk ' + ${product.price}">Tk 0</td>
+                <td data-label="Stock" th:text="${product.stock}">0</td>
+                <td data-label="Rating" th:text="${product.rating}">0</td>
+                <td data-label="Actions" class="action-cell admin-action-cell">
+                    <a class="button ghost admin-icon-btn" th:href="@{/seller/products/{id}/edit(id=${product.id})}" aria-label="Edit product" title="Edit product"><i class="fa-regular fa-pen-to-square"></i></a>
+                    <form th:action="@{/seller/products/{id}/stock(id=${product.id})}" method="post" class="inline-form stock-adjust-form">
+                        <input name="quantityDelta" type="number" value="1" aria-label="Stock delta">
+                        <button class="admin-icon-btn" type="submit" aria-label="Adjust stock" title="Adjust stock"><i class="fa-solid fa-arrows-rotate"></i></button>
+                    </form>
+                    <form th:action="@{/seller/products/{id}/delete(id=${product.id})}" method="post">
+                        <button class="button danger admin-icon-btn" type="submit" aria-label="Delete product" title="Delete product"><i class="fa-regular fa-trash-can"></i></button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/seller :: head('Dashboard | Spark Mart Seller')}"></head>
+<body class="admin-body">
+<aside th:replace="~{fragments/seller :: sidebar}"></aside>
+<main class="admin-main">
+    <div class="admin-title">
+        <div>
+            <h1>Dashboard</h1>
+            <p>Operational summary from stored catalog and order data.</p>
+        </div>
+    </div>
+    <section class="metric-grid">
+        <article><span>Products</span><strong th:text="${totalProducts}">0</strong></article>
+        <article><span>Low stock</span><strong th:text="${lowStockCount}">0</strong></article>
+        <article><span>On-demand</span><strong th:text="${onDemandCount}">0</strong></article>
+        <article><span>Orders</span><strong th:text="${totalOrders}">0</strong></article>
+        <article><span>New orders</span><strong th:text="${newOrderNotifications}">0</strong></article>
+        <article><span>Revenue</span><strong th:text="'Tk ' + ${totalRevenue}">Tk 0</strong></article>
+    </section>
+    <section class="admin-section">
+        <div class="section-title">
+            <h2>Recent Orders</h2>
+            <a th:href="@{/seller/orders}">View all</a>
+        </div>
+        <p class="empty-state" th:if="${#lists.isEmpty(recentOrders)}">No orders yet.</p>
+        <div class="table-wrap" th:unless="${#lists.isEmpty(recentOrders)}">
+            <table>
+                <thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Payment</th><th>Status</th></tr></thead>
+                <tbody>
+                <tr th:each="order : ${recentOrders}">
+                    <td data-label="Order" th:text="${order.orderNumber}">Order</td>
+                    <td data-label="Customer" th:text="${order.name}">Customer</td>
+                    <td data-label="Total" th:text="'Tk ' + ${order.total}">Total</td>
+                    <td data-label="Payment" th:text="${order.paymentStatus}">Payment</td>
+                    <td data-label="Status" th:text="${order.fulfillmentStatus}">Status</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>

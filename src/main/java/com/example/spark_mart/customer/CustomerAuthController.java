@@ -86,7 +86,7 @@ public class CustomerAuthController {
             session.removeAttribute(com.example.spark_mart.admin.AdminService.SESSION_ADMIN);
             customerService.login(session, seller);
             session.setAttribute(com.example.spark_mart.admin.AdminService.SESSION_SELLER, seller.getEmail());
-            return "redirect:/admin/dashboard";
+            return "redirect:/seller/dashboard";
         } catch (IllegalArgumentException ex) {
             model.addAttribute("mode", "seller");
             model.addAttribute("error", ex.getMessage());

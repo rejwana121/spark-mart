@@ -47,7 +47,7 @@
         <p th:if="${mode == 'register'}">Already have an account? <a th:href="@{/login}">Login</a></p>
         <p th:if="${mode != 'register'}">New customer? <a th:href="@{/register}">Create account</a></p>
         <p th:if="${mode != 'seller'}">Want to sell? <a th:href="@{/seller/register}">Become a seller</a></p>
-        <p th:if="${mode == 'seller'}">Already a seller? <a th:href="@{/admin/login}">Seller login</a></p>
+        <p th:if="${mode == 'seller'}">Already a seller? <a th:href="@{/seller/login}">Seller login</a></p>
     </div>
 </main>
 </body>

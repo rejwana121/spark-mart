@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/seller :: head('Seller Login | Spark Mart')}"></head>
+<body class="login-page seller-login-page">
+<main class="login-panel professional-auth-card seller-auth-card">
+    <a class="brand" th:href="@{/}">
+        <span class="brand-mark">S</span>
+        <span>Spark Mart Seller</span>
+    </a>
+    <span class="auth-badge"><i class="fa-solid fa-store"></i> Seller Center</span>
+    <h1>Seller Login</h1>
+    <p>Secure access for sellers. Seller accounts are upgraded customer accounts.</p>
+    <p class="alert" th:if="${error}" th:text="${error}">Error</p>
+    <form th:action="@{/seller/login}" method="post" class="stacked-form">
+        <label><span><i class="fa-regular fa-envelope"></i> Email</span><input name="email" type="email" autocomplete="username" placeholder="seller@example.com" required></label>
+        <label><span><i class="fa-solid fa-lock"></i> Password</span><input name="password" type="password" autocomplete="current-password" required></label>
+        <button class="button primary wide" type="submit"><i class="fa-solid fa-right-to-bracket"></i><span>Login to Seller Center</span></button>
+    </form>
+    <div class="auth-switch-card">
+        <p>New seller? <a th:href="@{/seller/register}">Create seller account</a></p>
+    </div>
+</main>
+</body>
+</html>

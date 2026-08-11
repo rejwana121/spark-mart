@@ -6,16 +6,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.spark_mart.security.AdminAuthenticationInterceptor;
 import com.example.spark_mart.security.CustomerAuthenticationInterceptor;
+import com.example.spark_mart.security.SellerAuthenticationInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     private final AdminAuthenticationInterceptor adminAuthenticationInterceptor;
     private final CustomerAuthenticationInterceptor customerAuthenticationInterceptor;
+    private final SellerAuthenticationInterceptor sellerAuthenticationInterceptor;
 
     public WebConfig(AdminAuthenticationInterceptor adminAuthenticationInterceptor,
-            CustomerAuthenticationInterceptor customerAuthenticationInterceptor) {
+            CustomerAuthenticationInterceptor customerAuthenticationInterceptor,
+            SellerAuthenticationInterceptor sellerAuthenticationInterceptor) {
         this.adminAuthenticationInterceptor = adminAuthenticationInterceptor;
         this.customerAuthenticationInterceptor = customerAuthenticationInterceptor;
+        this.sellerAuthenticationInterceptor = sellerAuthenticationInterceptor;
     }
 
     @Override
@@ -24,9 +28,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/login", "/admin/logout");
 
-        // Guest/public view is allowed for homepage, categories, product details and navbar search.
-        // Customer login is required only for actions that create personal data: cart, checkout,
-        // payment, profile and orders.
+        registry.addInterceptor(sellerAuthenticationInterceptor)
+                .addPathPatterns("/seller/**")
+                .excludePathPatterns("/seller/login", "/seller/logout", "/seller/register");
+
         registry.addInterceptor(customerAuthenticationInterceptor)
                 .addPathPatterns("/cart/**", "/checkout/**", "/payment/**", "/orders/**", "/profile/**");
     }
