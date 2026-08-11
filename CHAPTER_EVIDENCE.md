@@ -1,10 +1,10 @@
 # Chapters 1-7 Implementation Evidence
 
-This document maps each course chapter to the specific files, features, and implementation details in the Spark Mart project.
+This document maps each course chapter (matching the seven authoritative DOCX files in `docs/`) to the specific files, features, and implementation details in the Spark Mart project.
 
 ---
 
-## Chapter 1: Spring Boot Fundamentals
+## Chapter 1: The Modern Spring Landscape
 
 **Status: Fully Implemented**
 
@@ -19,7 +19,7 @@ This document maps each course chapter to the specific files, features, and impl
 
 ---
 
-## Chapter 2: Spring MVC & Thymeleaf
+## Chapter 2: Dynamic Interfaces with Thymeleaf and Bootstrap
 
 **Status: Fully Implemented**
 
@@ -37,7 +37,7 @@ This document maps each course chapter to the specific files, features, and impl
 
 ---
 
-## Chapter 3: Virtual Threads & Concurrency
+## Chapter 3: Persistence with Relational Databases
 
 **Status: Implemented via Configuration**
 
@@ -50,7 +50,7 @@ This document maps each course chapter to the specific files, features, and impl
 
 ---
 
-## Chapter 4: Data Access with Spring Data JPA & Flyway
+## Chapter 4: Advanced Relationships and Migrations
 
 **Status: Mostly Implemented (Product-Category migration deferred)**
 
@@ -98,9 +98,13 @@ This document maps each course chapter to the specific files, features, and impl
 
 ---
 
-## Chapter 5: Spring Security
+## Chapter 5: Spring Security and Identity
 
-**Status: Implemented**
+**Status: Mostly implemented**
+
+Spring Security is present for BCrypt password encoding and Actuator RBAC. However, the application's primary authentication (admin, seller, customer login) uses custom hand-rolled session-based logic with `HandlerInterceptor` classes rather than Spring Security's `SecurityFilterChain` form login or filter-based authentication.
+
+### What exists
 
 | Topic | Implementation |
 |---|---|
@@ -113,9 +117,16 @@ This document maps each course chapter to the specific files, features, and impl
 | Role isolation | Admin login clears customer/seller sessions; customer login clears admin/seller sessions |
 | Seller role upgrade | Customer accounts can become sellers via `becomeSeller()` |
 
+### What remains
+
+- No Spring Security form login for application routes (login, register, profile, cart, checkout, admin)
+- No Spring Security filter-based request authorization on application URLs
+- No `sec:authorize` Thymeleaf dialect in any template
+- All role-based access control is enforced via custom interceptors, not Spring Security's `authorizeHttpRequests`
+
 ---
 
-## Chapter 6: Testing
+## Chapter 6: Testing Strategy for Modern Apps
 
 **Status: Implemented**
 
@@ -146,7 +157,7 @@ This document maps each course chapter to the specific files, features, and impl
 
 ---
 
-## Chapter 7: Observability, Docker & Deployment
+## Chapter 7: Production Readiness, Cloud Native, and Spring AI
 
 **Status: Partially Implemented**
 
@@ -178,12 +189,12 @@ This document maps each course chapter to the specific files, features, and impl
 
 ## Summary Table
 
-| Chapter | Title | Status |
+| Chapter | Title (matches DOCX) | Status |
 |---|---|---|
-| 1 | Spring Boot Fundamentals | Fully implemented |
-| 2 | Spring MVC & Thymeleaf | Fully implemented |
-| 3 | Virtual Threads & Concurrency | Implemented via configuration |
-| 4 | Data Access (JPA + Flyway) | Mostly implemented (Product-Category deferred) |
-| 5 | Spring Security | Fully implemented |
-| 6 | Testing | 77 tests, all passing |
-| 7 | Observability, Docker & Deployment | Actuator implemented; Docker configured but not tested |
+| 1 | The Modern Spring Landscape | Fully implemented |
+| 2 | Dynamic Interfaces with Thymeleaf and Bootstrap | Fully implemented |
+| 3 | Persistence with Relational Databases | Implemented via configuration |
+| 4 | Advanced Relationships and Migrations | Mostly implemented (Product-Category deferred) |
+| 5 | Spring Security and Identity | Mostly implemented (hand-rolled session auth, no Spring Security form login) |
+| 6 | Testing Strategy for Modern Apps | 77 tests, all passing |
+| 7 | Production Readiness, Cloud Native, and Spring AI | Actuator implemented; Docker configured but not tested; Spring AI deferred |

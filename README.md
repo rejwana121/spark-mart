@@ -87,6 +87,18 @@ Activate with `--spring.profiles.active=dev` or `--spring.profiles.active=prod`.
 
 Docker configuration exists but was **not physically tested** because Docker is not installed on the development machine. See `DOCKER.md` for Docker usage instructions and `docker-compose.yml` for the multi-container setup.
 
+## Course Chapters (DOCX References)
+
+The seven authoritative DOCX chapter files in the `docs/` directory:
+
+1. **Chapter 1: The Modern Spring Landscape**
+2. **Chapter 2: Dynamic Interfaces with Thymeleaf and Bootstrap**
+3. **Chapter 3: Persistence with Relational Databases**
+4. **Chapter 4: Advanced Relationships and Migrations**
+5. **Chapter 5: Spring Security and Identity**
+6. **Chapter 6: Testing Strategy for Modern Apps**
+7. **Chapter 7: Production Readiness, Cloud Native, and Spring AI**
+
 ## Author
 
 Created by Rejwana Akter.
