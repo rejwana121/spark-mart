@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head('Profile | Spark Mart')}"></head>
+<body>
+<header th:replace="~{fragments/site :: header}"></header>
+<main class="page narrow">
+    <section class="confirmation professional-profile-card">
+        <span class="category-pill"><i class="fa-regular fa-circle-user"></i> Customer Profile</span>
+        <h1 th:text="${customer.name}">Customer</h1>
+        <p>Manage saved contact, delivery and checkout details once. Spark Mart will reuse these during checkout.</p>
+        <div class="status-grid profile-status-grid">
+            <div><span>Name</span><strong th:text="${customer.name}">Name</strong></div>
+            <div><span>Email</span><strong th:text="${customer.email}">email@example.com</strong></div>
+            <div><span>Phone</span><strong th:text="${customer.phone ?: 'Not added'}">Phone</strong></div>
+            <div><span>District / area</span><strong th:text="${customer.area ?: 'Not added'}">Area</strong></div>
+            <div><span>Default address</span><strong th:text="${customer.address ?: 'Not added'}">Address</strong></div>
+            <div><span>Seller access</span><strong th:text="${customer.seller ? 'Active seller' : 'Customer only'}">Customer only</strong></div>
+            <div><span>Total orders</span><strong th:text="${totalOrders}">0</strong></div>
+            <div><span>Total spent</span><strong th:text="'Tk ' + ${totalSpent}">Tk 0</strong></div>
+        </div>
+        <form th:action="@{/profile/update}" method="post" class="stacked-form profile-form auth-grid-form">
+            <label><span><i class="fa-regular fa-user"></i> Name</span><input name="name" th:value="${customer.name}" required></label>
+            <label><span><i class="fa-solid fa-phone"></i> Phone</span><input name="phone" th:value="${customer.phone}"></label>
+            <label><span><i class="fa-solid fa-location-dot"></i> District / area</span><input name="area" th:value="${customer.area}" placeholder="Dhaka, Savar, Ashulia"></label>
+            <label class="full-field"><span><i class="fa-regular fa-address-card"></i> Default delivery address</span><textarea name="address" th:text="${customer.address}" rows="3"></textarea></label>
+            <label class="full-field"><span><i class="fa-regular fa-note-sticky"></i> Default order note</span><textarea name="orderNote" th:text="${customer.orderNote}" rows="2"></textarea></label>
+            <button class="button primary wide" type="submit"><i class="fa-solid fa-floppy-disk"></i><span>Save Profile</span></button>
+        </form>
+        <div class="seller-upgrade-panel" th:if="${!customer.seller}">
+            <i class="fa-solid fa-store"></i>
+            <div>
+                <strong>Want to sell on Spark Mart?</strong>
+                <p>Your customer account can be safely upgraded to a seller account using the same email and password.</p>
+            </div>
+            <a class="button ghost" th:href="@{/seller/register}"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>Become a Seller</span></a>
+        </div>
+        <div class="seller-upgrade-panel seller-active" th:if="${customer.seller}">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div>
+                <strong th:text="${customer.sellerStoreName ?: 'Seller account active'}">Seller account active</strong>
+                <p>Seller access is active for this customer account.</p>
+            </div>
+            <a class="button primary" th:href="@{/admin/dashboard}"><i class="fa-solid fa-gauge-high"></i><span>Seller Dashboard</span></a>
+        </div>
+        <div class="table-wrap" th:if="${!#lists.isEmpty(recentOrders)}">
+            <table>
+                <thead><tr><th>Recent order</th><th>Total</th><th>Status</th></tr></thead>
+                <tbody>
+                <tr th:each="order : ${recentOrders}">
+                    <td th:text="${order.orderNumber}">Order</td>
+                    <td th:text="'Tk ' + ${order.total}">Total</td>
+                    <td th:text="${order.fulfillmentStatus}">Status</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <form th:action="@{/logout}" method="post">
+            <button class="button danger" type="submit"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
+        </form>
+    </section>
+</main>
+<footer th:replace="~{fragments/site :: footer}"></footer>
+<script th:replace="~{fragments/site :: scripts}"></script>
+</body>
+</html>

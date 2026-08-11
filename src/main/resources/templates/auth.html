@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head(${mode == 'seller' ? 'Seller Account | Spark Mart' : (mode == 'register' ? 'Sign Up | Spark Mart' : 'Login | Spark Mart')})}"></head>
+<body class="login-page auth-upgrade-page">
+<main class="login-panel professional-auth-card">
+    <a class="brand store-brand" th:href="@{/}">
+        <span class="brand-mark">S</span>
+        <span>Spark Mart</span>
+    </a>
+    <span class="auth-badge" th:if="${mode == 'seller'}"><i class="fa-solid fa-store"></i> Seller Center</span>
+    <h1 th:text="${mode == 'seller' ? 'Create seller account' : (mode == 'register' ? 'Create customer account' : 'Customer login')}">Login</h1>
+    <p th:text="${mode == 'seller' ? 'Every seller account is also a customer account. Existing customers can upgrade using the same email and password.' : (mode == 'register' ? 'Save your delivery details once and checkout faster every time.' : 'Login to cart, buy, update and cancel your orders.')}">Welcome</p>
+    <p class="alert" th:if="${error}" th:text="${error}">Error</p>
+
+    <form th:if="${mode == 'register'}" th:action="@{/register}" method="post" class="stacked-form auth-grid-form">
+        <label><span><i class="fa-regular fa-user"></i> Full name</span><input name="name" required></label>
+        <label><span><i class="fa-regular fa-envelope"></i> Email</span><input name="email" type="email" required></label>
+        <label><span><i class="fa-solid fa-phone"></i> Phone number</span><input name="phone" type="tel" placeholder="01XXXXXXXXX"></label>
+        <label><span><i class="fa-solid fa-location-dot"></i> District / area</span><input name="area" placeholder="Dhaka, Savar, Ashulia"></label>
+        <label class="full-field"><span><i class="fa-regular fa-address-card"></i> Delivery address</span><textarea name="address" placeholder="House, road, village/area" rows="3"></textarea></label>
+        <label class="full-field"><span><i class="fa-regular fa-note-sticky"></i> Default order note</span><textarea name="orderNote" placeholder="Optional delivery instruction" rows="2"></textarea></label>
+        <label><span><i class="fa-solid fa-lock"></i> Password</span><input name="password" type="password" minlength="4" required></label>
+        <label><span><i class="fa-solid fa-lock"></i> Confirm password</span><input name="confirmPassword" type="password" minlength="4" required></label>
+        <button class="button primary wide" type="submit"><i class="fa-solid fa-user-plus"></i><span>Sign Up</span></button>
+    </form>
+
+    <form th:if="${mode == 'seller'}" th:action="@{/seller/register}" method="post" class="stacked-form auth-grid-form seller-register-form">
+        <label class="full-field"><span><i class="fa-solid fa-store"></i> Store name</span><input name="storeName" placeholder="Example: Rejwana Fashion Store" required></label>
+        <label><span><i class="fa-regular fa-user"></i> Owner name</span><input name="name" required></label>
+        <label><span><i class="fa-regular fa-envelope"></i> Email</span><input name="email" type="email" required></label>
+        <label><span><i class="fa-solid fa-phone"></i> Phone number</span><input name="phone" type="tel" placeholder="01XXXXXXXXX"></label>
+        <label><span><i class="fa-solid fa-location-dot"></i> District / area</span><input name="area" placeholder="Dhaka, Savar, Ashulia"></label>
+        <label class="full-field"><span><i class="fa-regular fa-address-card"></i> Store pickup address</span><textarea name="address" placeholder="Business/store address" rows="3"></textarea></label>
+        <label><span><i class="fa-solid fa-lock"></i> Password</span><input name="password" type="password" minlength="4" required></label>
+        <label><span><i class="fa-solid fa-lock"></i> Confirm password</span><input name="confirmPassword" type="password" minlength="4" required></label>
+        <div class="seller-security-note full-field"><i class="fa-solid fa-shield-halved"></i> If this email already has a customer account, use the same password to safely upgrade it to seller access.</div>
+        <button class="button primary wide" type="submit"><i class="fa-solid fa-store"></i><span>Create Seller Account</span></button>
+    </form>
+
+    <form th:if="${mode != 'register' and mode != 'seller'}" th:action="@{/login}" method="post" class="stacked-form">
+        <label><span><i class="fa-regular fa-envelope"></i> Email</span><input name="email" type="email" required></label>
+        <label><span><i class="fa-solid fa-lock"></i> Password</span><input name="password" type="password" required></label>
+        <button class="button primary wide" type="submit"><i class="fa-solid fa-right-to-bracket"></i><span>Login</span></button>
+    </form>
+
+    <div class="auth-switch-card">
+        <p th:if="${mode == 'register'}">Already have an account? <a th:href="@{/login}">Login</a></p>
+        <p th:if="${mode != 'register'}">New customer? <a th:href="@{/register}">Create account</a></p>
+        <p th:if="${mode != 'seller'}">Want to sell? <a th:href="@{/seller/register}">Become a seller</a></p>
+        <p th:if="${mode == 'seller'}">Already a seller? <a th:href="@{/admin/login}">Seller login</a></p>
+    </div>
+</main>
+</body>
+</html>

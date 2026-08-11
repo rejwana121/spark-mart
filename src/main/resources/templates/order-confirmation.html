@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head('Order Details | Spark Mart')}"></head>
+<body>
+<header th:replace="~{fragments/site :: header}"></header>
+<main class="page order-detail-page">
+    <section class="confirmation order-clear-card">
+        <span class="category-pill">Order Details</span>
+        <h1 th:text="${order.orderNumber}">Order</h1>
+        <p>Clear order details, product list, customer information, payment method and latest status.</p>
+        <div class="status-grid">
+            <div><span>Payment</span><strong th:text="${order.paymentStatus}">Payment</strong></div>
+            <div><span>Order Status</span><strong th:text="${order.fulfillmentStatus}">Status</strong></div>
+            <div><span>Subtotal</span><strong th:text="'৳ ' + ${order.subtotal}">৳0</strong></div>
+            <div><span>Delivery</span><strong th:text="'৳ ' + ${order.deliveryCharge}">৳0</strong></div>
+            <div><span>Total</span><strong th:text="'৳ ' + ${order.total}">৳0</strong></div>
+            <div><span>Method</span><strong th:text="${order.paymentLabel()}">Method</strong></div>
+        </div>
+
+        <div class="order-two-column">
+            <div class="order-info-box">
+                <h2>Ordered Products</h2>
+                <div class="order-product-line" th:each="line : ${order.lines}">
+                    <img th:src="${line.imageUrl() ?: 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&w=120&q=80'}" th:alt="${line.name()}">
+                    <div>
+                        <strong th:text="${line.name()}">Product</strong>
+                        <span th:text="${line.quantity() + ' × ৳' + line.unitPrice()}">Qty</span>
+                    </div>
+                    <b th:text="'৳ ' + ${line.lineTotal()}">৳0</b>
+                </div>
+            </div>
+            <div class="order-info-box">
+                <h2>Customer &amp; Delivery</h2>
+                <p><strong>Name:</strong> <span th:text="${order.name}">Name</span></p>
+                <p><strong>Email:</strong> <span th:text="${order.email}">Email</span></p>
+                <p><strong>Phone:</strong> <span th:text="${order.phone}">Phone</span></p>
+                <p><strong>Address:</strong> <span th:text="${order.address}">Address</span></p>
+                <p><strong>Area:</strong> <span th:text="${order.area}">Area</span></p>
+                <p><strong>Note:</strong> <span th:text="${order.note}">Note</span></p>
+            </div>
+        </div>
+
+        <div class="order-edit-zone" th:if="${currentCustomer != null and (order.fulfillmentStatus == 'Order Sent' or order.fulfillmentStatus == 'Approved')}">
+            <h2>Update delivery information</h2>
+            <form th:action="@{/orders/{id}/update(id=${order.orderNumber})}" method="post" class="stacked-form compact-form">
+                <label>Phone<input name="phone" th:value="${order.phone}" required></label>
+                <label>Address<textarea name="address" required th:text="${order.address}"></textarea></label>
+                <label>Area<input name="area" th:value="${order.area}"></label>
+                <label>Note<textarea name="note" th:text="${order.note}"></textarea></label>
+                <button class="button primary" type="submit"><i class="fa-solid fa-floppy-disk"></i><span>Save delivery info</span></button>
+            </form>
+            <form th:action="@{/orders/{id}/cancel(id=${order.orderNumber})}" method="post" class="inline-form cancel-form">
+                <button class="button danger" type="submit"><i class="fa-solid fa-ban"></i><span>Cancel order</span></button>
+            </form>
+        </div>
+        <div class="order-actions-row">
+            <a class="button primary" th:href="@{/orders}"><i class="fa-solid fa-box"></i><span>View Orders</span></a>
+            <a class="button ghost" th:href="@{/}"><i class="fa-solid fa-house"></i><span>Continue shopping</span></a>
+        </div>
+    </section>
+</main>
+<div th:replace="~{fragments/site :: cartFab}"></div>
+<footer th:replace="~{fragments/site :: footer}"></footer>
+<script th:replace="~{fragments/site :: scripts}"></script>
+</body>
+</html>

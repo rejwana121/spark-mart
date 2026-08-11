@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head(${category.name() + ' | Spark Mart'})}"></head>
+<body>
+<header th:replace="~{fragments/site :: header}"></header>
+<main class="page">
+    <section class="page-heading">
+        <div>
+            <h1 th:text="${category.name()}">Category</h1>
+            <p th:text="${category.description()}">Category description</p>
+        </div>
+    </section>
+
+    <form class="filter-bar" method="get">
+        <input name="min" type="number" min="0" placeholder="Min price" th:value="${min}">
+        <input name="max" type="number" min="0" placeholder="Max price" th:value="${max}">
+        <select name="rating">
+            <option value="">Any rating</option>
+            <option value="4" th:selected="${rating == '4'}">4.0+</option>
+            <option value="4.5" th:selected="${rating == '4.5'}">4.5+</option>
+        </select>
+        <select name="sort">
+            <option value="">Newest</option>
+            <option value="priceAsc" th:selected="${sort == 'priceAsc'}">Price low to high</option>
+            <option value="priceDesc" th:selected="${sort == 'priceDesc'}">Price high to low</option>
+            <option value="rating" th:selected="${sort == 'rating'}">Top rated</option>
+        </select>
+        <label class="check-row">
+            <input type="checkbox" name="stock" value="true" th:checked="${stock == 'true'}">
+            In stock
+        </label>
+        <button type="submit">Apply</button>
+    </form>
+
+    <div class="product-grid">
+        <th:block th:each="product : ${products}">
+            <article th:replace="~{fragments/product-card :: card(${product})}"></article>
+        </th:block>
+    </div>
+    <p class="empty-state" th:if="${#lists.isEmpty(products)}">No products match this filter.</p>
+</main>
+<div th:replace="~{fragments/site :: cartFab}"></div>
+<footer th:replace="~{fragments/site :: footer}"></footer>
+<script th:replace="~{fragments/site :: scripts}"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin :: head('AI Sales Prediction | Spark Mart Admin')}"></head>
+<body class="admin-body">
+<aside th:replace="~{fragments/admin :: sidebar}"></aside>
+<main class="admin-main">
+    <div class="admin-title"><div><h1>AI Sales Prediction</h1><p>Rule-based demand, stock, low-stock, high-demand, slow-selling, and category growth prediction.</p></div></div>
+    <section class="admin-section table-wrap">
+        <table><thead><tr><th>Product</th><th>Sold</th><th>Current Stock</th><th>Predicted Demand</th><th>Recommended Stock</th><th>Alert</th></tr></thead>
+        <tbody><tr th:each="product : ${products}" th:with="sold=${soldByProduct[product.name] ?: 0}">
+            <td th:text="${product.name}">Product</td>
+            <td th:text="${sold}">0</td>
+            <td th:text="${product.stock}">0</td>
+            <td th:text="${sold * 2 + 5}">0</td>
+            <td th:text="${sold * 3 + 10}">0</td>
+            <td th:text="${product.stock <= 5 ? 'Low stock' : (sold >= 5 ? 'High demand' : 'Slow / normal')}">Alert</td>
+        </tr></tbody></table>
+    </section>
+    <section class="admin-section table-wrap">
+        <h2>Category Growth Prediction</h2>
+        <table><tbody><tr th:each="entry : ${categoryRevenue}"><td th:text="${entry.key}">Category</td><td th:text="${entry.value.compareTo(T(java.math.BigDecimal).ZERO) > 0 ? 'Growing category' : 'Needs promotion'}">Prediction</td></tr></tbody></table>
+    </section>
+</main>
+</body>
+</html>

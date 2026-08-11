@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin :: head('Categories | Spark Mart Admin')}"></head>
+<body class="admin-body">
+<aside th:replace="~{fragments/admin :: sidebar}"></aside>
+<main class="admin-main">
+    <div class="admin-title"><div><h1>Category Management</h1><p>Create and maintain storefront categories.</p></div></div>
+    <form th:action="@{/admin/categories}" method="post" class="filter-bar">
+        <input name="slug" placeholder="slug" required>
+        <input name="name" placeholder="Display name" required>
+        <input name="description" placeholder="Description" required>
+        <button class="admin-icon-btn" type="submit" aria-label="Save category" title="Save category"><i class="fa-solid fa-plus"></i><span>Add</span></button>
+    </form>
+    <div class="table-wrap">
+        <table><thead><tr><th>Slug</th><th>Name</th><th>Description</th><th>Action</th></tr></thead>
+        <tbody><tr th:each="category : ${categories}">
+            <td data-label="Slug" th:text="${category.slug()}">slug</td>
+            <td data-label="Name" th:text="${category.name()}">Name</td>
+            <td data-label="Description" th:text="${category.description()}">Description</td>
+            <td data-label="Action" class="admin-action-cell">
+                <form th:action="@{/admin/categories/{slug}/delete(slug=${category.slug()})}" method="post">
+                    <button class="button danger admin-icon-btn" type="submit" aria-label="Delete category if empty" title="Delete category if empty"><i class="fa-regular fa-trash-can"></i></button>
+                </form>
+            </td>
+        </tr></tbody></table>
+    </div>
+</main>
+</body>
+</html>

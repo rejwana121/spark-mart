@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin :: head('Inventory | Spark Mart Admin')}"></head>
+<body class="admin-body">
+<aside th:replace="~{fragments/admin :: sidebar}"></aside>
+<main class="admin-main">
+    <div class="admin-title"><div><h1>Inventory Overview</h1><p>Current stock and low-stock products.</p></div></div>
+    <p class="alert" th:text="'Low stock items: ' + ${lowStockCount}">Low stock</p>
+    <div class="table-wrap">
+        <table><thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Suggested Action</th></tr></thead>
+        <tbody><tr th:each="product : ${products}"><td th:text="${product.name}">Product</td><td th:text="${product.categoryName}">Category</td><td th:text="${product.stock}">0</td><td th:text="${product.stock <= 5 ? 'Restock urgently' : 'Stock OK'}">Action</td></tr></tbody></table>
+    </div>
+</main>
+</body>
+</html>

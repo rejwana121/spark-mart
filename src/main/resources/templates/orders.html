@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head('Orders | Spark Mart')}"></head>
+<body>
+<header th:replace="~{fragments/site :: header}"></header>
+<main class="page">
+    <section class="page-heading">
+        <div>
+            <h1>My Orders</h1>
+            <p>Order history with products, payment method, status, and date/time.</p>
+        </div>
+    </section>
+    <p class="empty-state" th:if="${#lists.isEmpty(orders)}">You have no orders yet.</p>
+    <div class="table-wrap" th:unless="${#lists.isEmpty(orders)}">
+        <table>
+            <thead>
+            <tr><th>Order ID</th><th>Products</th><th>Total</th><th>Payment</th><th>Payment Status</th><th>Order Status</th><th>Date/Time</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orders}">
+                <td data-label="Order ID" th:text="${order.orderNumber}">Order</td>
+                <td data-label="Products">
+                    <span th:each="line : ${order.lines}" th:text="${line.quantity() + ' x ' + line.name()}">Line</span>
+                </td>
+                <td data-label="Total" th:text="'Tk ' + ${order.total}">Total</td>
+                <td data-label="Payment" th:text="${order.paymentLabel()}">Payment</td>
+                <td data-label="Payment Status" th:text="${order.paymentStatus}">Payment Status</td>
+                <td data-label="Order Status" th:text="${order.fulfillmentStatus}">Status</td>
+                <td data-label="Date/Time" th:text="${#temporals.format(order.createdAt, 'dd MMM yyyy HH:mm')}">Date</td>
+                <td data-label="Action"><a class="button ghost compact-button" th:href="@{/orders/{id}(id=${order.orderNumber})}"><i class="fa-regular fa-eye"></i><span>View</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{fragments/site :: footer}"></footer>
+<script th:replace="~{fragments/site :: scripts}"></script>
+</body>
+</html>

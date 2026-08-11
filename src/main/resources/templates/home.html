@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head('Spark Mart')}"></head>
+<body>
+<header th:replace="~{fragments/site :: header}"></header>
+<main class="app-main">
+    <section class="hero">
+        <div class="shell hero-grid">
+            <div class="hero-copy">
+                <p class="eyebrow">Public shopping view</p>
+                <h1>Find better deals in the <em>everyday.</em></h1>
+                <p>Guests can browse categories, products and item details. Login only when you want to cart, buy, update or cancel an order.</p>
+                <div class="hero-actions icon-row-actions">
+                    <a class="round-action" th:href="@{/categories}" aria-label="Browse categories" title="Browse categories"><i class="fa-solid fa-layer-group"></i></a>
+                    <a class="round-action" th:href="@{/login}" aria-label="Customer login" title="Customer login"><i class="fa-solid fa-user"></i></a>
+                    <a class="round-action seller" th:href="@{/seller/register}" aria-label="Become a seller" title="Become a seller"><i class="fa-solid fa-store"></i></a>
+                    <a class="round-action" th:href="@{/track-order}" aria-label="Track order" title="Track order"><i class="fa-solid fa-box-open"></i></a>
+                </div>
+                <div class="hero-trust">
+                    <div class="avatar-stack">
+                        <span class="mini-avatar">SM</span>
+                        <span class="mini-avatar">BD</span>
+                        <span class="mini-avatar">4.9</span>
+                    </div>
+                    <span>Trusted marketplace demo with public browsing, customer accounts and seller controls.</span>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-panel fresh-slider" data-slider aria-label="Fresh drop product slider">
+                    <div class="slider-head">
+                        <span>Fresh Drop</span>
+                        <div class="slider-controls">
+                            <button type="button" data-slider-prev aria-label="Previous fresh drop"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button type="button" data-slider-next aria-label="Next fresh drop"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="slider-viewport">
+                        <div class="slider-track">
+                            <a class="fresh-slide" th:each="product, iter : ${newArrivals}"
+                                th:classappend="${iter.index == 0} ? ' is-active' : ''"
+                                th:href="@{/product/{id}(id=${product.id})}">
+                                <img th:src="${product.imageUrl}" th:alt="${product.name}">
+                                <div>
+                                    <span th:text="${product.categoryName}">Category</span>
+                                    <strong th:text="${product.name}">Product</strong>
+                                    <p th:text="'Tk ' + ${product.price} + ' | ' + ${product.stockLabel}">Tk 0</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="slider-dots" aria-label="Fresh drop navigation">
+                        <button type="button" th:each="product, iter : ${newArrivals}"
+                            th:classappend="${iter.index == 0} ? ' is-active' : ''"
+                            th:attr="aria-label=${'Show fresh drop ' + (iter.index + 1)}"
+                            data-slider-dot></button>
+                    </div>
+                </div>
+                <div class="floating-note note-one"><span class="note-icon">S</span><div><strong>Fresh prices</strong><span>Updated catalog picks</span></div></div>
+                <div class="floating-note note-two"><span class="note-icon">OK</span><div><strong>Easy checkout</strong><span>Login when ready to buy</span></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="shell search-results-panel" th:if="${searchQuery != null and !searchQuery.isBlank()}">
+        <div class="section-heading compact-heading">
+            <div>
+                <p class="eyebrow">Navbar search result</p>
+                <h2 th:text="${'Results for “' + searchQuery + '”'}">Search results</h2>
+            </div>
+            <p th:if="${generatedProduct != null}">No exact match was found, so Spark AI created a realistic product and saved it in the catalog.</p>
+        </div>
+        <div class="product-grid market-product-grid">
+            <th:block th:each="product : ${searchResults}">
+                <article th:replace="~{fragments/product-card :: card(${product})}"></article>
+            </th:block>
+        </div>
+    </section>
+
+    <section class="shell market-categories" id="categories">
+        <div class="market-section-title">
+            <h2>Categories</h2>
+            <span>Image based category showcase</span>
+        </div>
+        <div class="category-tile-grid">
+            <a class="category-tile" th:each="category : ${categories}"
+               th:href="@{/category/{slug}(slug=${category.slug()})}">
+                <img th:src="${categoryImages[category.slug()]}" th:alt="${category.name()}">
+                <span th:text="${category.name()}">Category</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="shell just-for-you" id="just-for-you">
+        <div class="market-section-title">
+            <h2>Just For You</h2>
+            <span>All category products are shown here as showcase items</span>
+        </div>
+        <div class="product-grid market-product-grid load-grid" data-load-grid>
+            <th:block th:each="product, iter : ${justForYou}">
+                <div class="load-more-card" th:classappend="${iter.index >= 24} ? ' is-hidden' : ''">
+                    <article th:replace="~{fragments/product-card :: card(${product})}"></article>
+                </div>
+            </th:block>
+        </div>
+        <div class="load-more-wrap" th:if="${#lists.size(justForYou) > 24}">
+            <button type="button" class="load-more-btn" data-load-more aria-label="Load more products" title="Load more"><i class="fa-solid fa-chevron-down"></i><span>Load More</span></button>
+        </div>
+    </section>
+</main>
+<div th:replace="~{fragments/site :: cartFab}"></div>
+<footer th:replace="~{fragments/site :: footer}"></footer>
+<script th:replace="~{fragments/site :: scripts}"></script>
+</body>
+</html>

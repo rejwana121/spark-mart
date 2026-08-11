@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin :: head('Payments | Spark Mart Admin')}"></head>
+<body class="admin-body">
+<aside th:replace="~{fragments/admin :: sidebar}"></aside>
+<main class="admin-main">
+    <div class="admin-title"><div><h1>Payment Management</h1><p>bKash, Nagad, and Card payment records.</p></div></div>
+    <p class="empty-state" th:if="${#lists.isEmpty(payments)}">No payments yet.</p>
+    <div class="table-wrap" th:unless="${#lists.isEmpty(payments)}">
+        <table><thead><tr><th>Order</th><th>Method</th><th>Transaction ID</th><th>Status</th><th>Amount</th><th>Paid At</th></tr></thead>
+        <tbody><tr th:each="payment : ${payments}">
+            <td data-label="Order" th:text="${payment.orderNumber}">Order</td>
+            <td data-label="Method" th:text="${payment.method}">Method</td>
+            <td data-label="Transaction ID" th:text="${payment.transactionId ?: 'N/A'}">Transaction</td>
+            <td data-label="Status" th:text="${payment.status}">Status</td>
+            <td data-label="Amount" th:text="'Tk ' + ${payment.amount}">Amount</td>
+            <td data-label="Paid At" th:text="${#temporals.format(payment.paidAt, 'dd MMM yyyy HH:mm')}">Date</td>
+        </tr></tbody></table>
+    </div>
+</main>
+</body>
+</html>

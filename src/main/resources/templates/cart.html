@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head('Cart | Spark Mart')}"></head>
+<body>
+<header th:replace="~{fragments/site :: header}"></header>
+<main class="page narrow">
+    <section class="page-heading">
+        <div>
+            <h1>Cart</h1>
+            <p>Review items before guest checkout.</p>
+        </div>
+    </section>
+
+    <p class="empty-state" th:if="${cart.empty}">Your cart is empty.</p>
+    <div class="cart-list" th:unless="${cart.empty}">
+        <article class="cart-row" th:each="item : ${cart.items}">
+            <img th:src="${item.imageUrl}" th:alt="${item.name}">
+            <div>
+                <h2 th:text="${item.name}">Product</h2>
+                <p th:if="${item.aiSuggested}">On-demand item requiring admin review.</p>
+                <span th:text="'Unit Tk ' + ${item.unitPrice}">Unit</span>
+                <strong th:text="'Line Tk ' + ${item.lineTotal}">Line</strong>
+            </div>
+            <form th:action="@{/cart/update}" method="post" class="qty-form">
+                <input type="hidden" name="productId" th:value="${item.productId}">
+                <input type="number" name="quantity" min="0" th:max="${item.availableStock}" th:value="${item.quantity}" aria-label="Quantity">
+                <button type="submit">Update</button>
+            </form>
+            <form th:action="@{/cart/remove}" method="post">
+                <input type="hidden" name="productId" th:value="${item.productId}">
+                <button class="button ghost" type="submit">Remove</button>
+            </form>
+        </article>
+        <div class="cart-summary">
+            <span>Subtotal</span>
+            <strong th:text="'Tk ' + ${cart.subtotal}">Tk 0</strong>
+            <span>Delivery charge</span>
+            <strong th:text="'Tk ' + ${cart.deliveryCharge}">Tk 0</strong>
+            <span>Grand Total</span>
+            <strong th:text="'Tk ' + ${cart.grandTotal}">Tk 0</strong>
+            <a class="button primary" th:href="@{/checkout}">Checkout</a>
+        </div>
+    </div>
+</main>
+<div th:replace="~{fragments/site :: cartFab}"></div>
+<footer th:replace="~{fragments/site :: footer}"></footer>
+<script th:replace="~{fragments/site :: scripts}"></script>
+</body>
+</html>

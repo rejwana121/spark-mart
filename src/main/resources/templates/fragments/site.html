@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#173f35">
+    <title th:text="${title}">Spark Mart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+
+<body>
+    <header th:fragment="header">
+        <div class="topbar professional-topbar">
+            <span><i class="fa-solid fa-truck-fast"></i> Free delivery across Bangladesh on orders over Tk 2,500</span>
+        </div>
+        <div class="site-header navbar professional-header">
+            <div class="shell nav-inner refined-nav-inner professional-nav-shell">
+                <a class="brand store-brand" th:href="@{/}">
+                    <span class="brand-mark">S</span>
+                    <span>Spark Mart</span>
+                </a>
+
+                <form class="header-search primary-navbar-search" th:action="@{/}" method="get" role="search">
+                    <input name="q" type="search" th:value="${searchQuery}" placeholder="Search products in Spark Mart"
+                        aria-label="Search products">
+                    <button type="submit" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+
+                <nav class="nav-links main-nav refined-main-nav professional-nav" aria-label="Quick actions">
+                    <a class="nav-action-pill" th:href="@{/track-order}" aria-label="Track order" title="Track order">
+                        <span class="nav-action-icon"><i class="fa-solid fa-box-open"></i></span>
+                        <span class="nav-action-text">Track Order</span>
+                    </a>
+                    <a class="nav-action-pill seller-pill" th:href="@{/seller/register}" aria-label="Become a seller" title="Become a seller" th:if="${!sellerLoggedIn}">
+                        <span class="nav-action-icon"><i class="fa-solid fa-store"></i></span>
+                        <span class="nav-action-text">Seller</span>
+                    </a>
+                    <a class="nav-action-pill seller-pill" th:href="@{/admin/dashboard}" aria-label="Seller dashboard" title="Seller dashboard" th:if="${sellerLoggedIn}">
+                        <span class="nav-action-icon"><i class="fa-solid fa-chart-line"></i></span>
+                        <span class="nav-action-text">Seller Center</span>
+                    </a>
+                </nav>
+
+                <div class="nav-actions refined-actions">
+                    <div class="account-menu" th:if="${currentCustomer == null}">
+                        <button class="icon-btn account-trigger" type="button" data-account-trigger aria-label="Customer account menu" aria-expanded="false" title="Customer account menu"><i class="fa-solid fa-user"></i></button>
+                        <div class="account-popover guest-popover">
+                            <a th:href="@{/login}"><span><i class="fa-regular fa-circle-user"></i></span> Customer Login</a>
+                            <a th:href="@{/register}"><span><i class="fa-solid fa-user-plus"></i></span> Create Account</a>
+                            <a th:href="@{/seller/register}"><span><i class="fa-solid fa-store"></i></span> Become a Seller</a>
+                        </div>
+                    </div>
+                    <div class="account-menu" th:if="${currentCustomer != null}">
+                        <button class="icon-btn account-trigger" type="button" data-account-trigger aria-label="Account menu" aria-expanded="false" title="Account menu"><i class="fa-solid fa-user"></i></button>
+                        <div class="account-popover">
+                            <a th:href="@{/profile}"><span><i class="fa-regular fa-circle-user"></i></span> Manage My Account</a>
+                            <a th:href="@{/orders}"><span><i class="fa-solid fa-box"></i></span> My Orders</a>
+                            <a th:href="@{/addresses}"><span><i class="fa-solid fa-location-dot"></i></span> My Addresses</a>
+                            <a th:href="@{/profile}"><span><i class="fa-regular fa-heart"></i></span> My Wishlist &amp; Followed Stores</a>
+                            <a th:href="@{/profile}"><span><i class="fa-regular fa-star"></i></span> My Reviews</a>
+                            <a th:href="@{/orders}"><span><i class="fa-solid fa-rotate-left"></i></span> My Returns &amp; Cancellations</a>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit"><span><i class="fa-solid fa-right-from-bracket"></i></span> Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="account-menu seller-account-menu" th:if="${sellerLoggedIn}">
+                        <button class="icon-btn account-trigger seller-trigger" type="button" data-account-trigger aria-label="Seller account menu" aria-expanded="false" title="Seller account menu"><i class="fa-solid fa-shop"></i></button>
+                        <div class="account-popover seller-popover">
+                            <div class="popover-profile-head" th:if="${currentSeller != null}">
+                                <strong th:text="${currentSeller.sellerStoreName ?: currentSeller.name}">Seller Store</strong>
+                                <small th:text="${currentSeller.email}">seller@email.com</small>
+                            </div>
+                            <a th:href="@{/admin/dashboard}"><span><i class="fa-solid fa-gauge-high"></i></span> Seller Dashboard</a>
+                            <a th:href="@{/admin/products}"><span><i class="fa-solid fa-boxes-stacked"></i></span> Products</a>
+                            <a th:href="@{/admin/orders}"><span><i class="fa-solid fa-clipboard-list"></i></span> Orders</a>
+                            <a th:href="@{/admin/analytics}"><span><i class="fa-solid fa-chart-pie"></i></span> Analytics</a>
+                            <form th:action="@{/admin/logout}" method="post">
+                                <button type="submit"><span><i class="fa-solid fa-right-from-bracket"></i></span> Seller Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                    <button class="icon-btn mobile-menu" type="button" data-menu aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+                </div>
+            </div>
+            <nav class="mobile-nav-panel" data-mobile-panel aria-label="Mobile navigation">
+                <a th:href="@{/track-order}"><i class="fa-solid fa-box-open"></i> Track Order</a>
+                <a th:href="@{/seller/register}" th:if="${!sellerLoggedIn}"><i class="fa-solid fa-store"></i> Become a Seller</a>
+                <a th:href="@{/admin/dashboard}" th:if="${sellerLoggedIn}"><i class="fa-solid fa-chart-line"></i> Seller Center</a>
+                <a th:href="@{/login}" th:if="${currentCustomer == null}"><i class="fa-solid fa-user"></i> Customer Login</a>
+                <a th:href="@{/register}" th:if="${currentCustomer == null}"><i class="fa-solid fa-user-plus"></i> Create Account</a>
+                <a th:href="@{/profile}" th:if="${currentCustomer != null}"><i class="fa-solid fa-user"></i> Profile</a>
+                <a th:href="@{/orders}" th:if="${currentCustomer != null}"><i class="fa-solid fa-box"></i> Orders</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="cart-fab-wrap" th:fragment="cartFab">
+        <button class="cart-fab" type="button" data-cart-toggle aria-controls="cartDrawer" aria-label="Cart summary">
+            <span><i class="fa-solid fa-cart-shopping"></i></span>
+            <strong th:text="${cartCount}">0</strong>
+        </button>
+        <aside id="cartDrawer" class="cart-drawer" aria-label="Cart summary">
+            <div class="drawer-head">
+                <h2>Cart</h2>
+                <button type="button" data-cart-close aria-label="Close cart"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div th:if="${miniCart.empty}" class="empty-state">Your cart is empty.</div>
+            <div th:unless="${miniCart.empty}" class="drawer-items">
+                <div class="drawer-item" th:each="item : ${miniCart.items}">
+                    <img th:src="${item.imageUrl}" th:alt="${item.name}">
+                    <div>
+                        <strong th:text="${item.name}">Product</strong>
+                        <span th:text="'Qty ' + ${item.quantity} + ' - Tk ' + ${item.lineTotal}">Qty</span>
+                    </div>
+                </div>
+                <div class="drawer-total">
+                    <span>Subtotal</span>
+                    <strong th:text="'Tk ' + ${miniCart.subtotal}">Tk 0</strong>
+                </div>
+                <a class="button primary wide" th:href="@{/checkout}"><i class="fa-solid fa-credit-card"></i><span>Checkout</span></a>
+                <a class="button ghost wide" th:href="@{/cart}"><i class="fa-solid fa-cart-shopping"></i><span>View cart</span></a>
+            </div>
+        </aside>
+        <div class="drawer-backdrop" data-cart-close></div>
+    </div>
+
+    <footer class="site-footer footer" th:fragment="footer">
+        <div class="shell footer-grid">
+            <div>
+                <a class="brand store-brand" th:href="@{/}">
+                    <span class="brand-mark">S</span>
+                    <span>Spark Mart</span>
+                </a>
+                <p class="footer-about">Created by Rejwana Akter.</p>
+            </div>
+            <div>
+                <h3>Shop</h3>
+                <a th:href="@{/}">Just For You</a>
+                <a th:href="@{/categories}">Categories</a>
+                <a th:href="@{/cart}">Cart</a>
+            </div>
+            <div>
+                <h3>Help</h3>
+                <a th:href="@{/track-order}">Track Order</a>
+                <a th:href="@{/contact}">Contact Support</a>
+                <a th:href="@{/checkout}">Checkout</a>
+            </div>
+            <div>
+                <h3>Categories</h3>
+                <a th:each="category : ${navCategories}" th:href="@{/category/{slug}(slug=${category.slug()})}"
+                    th:text="${category.name()}">Category</a>
+            </div>
+        </div>
+        <div class="shell footer-bottom">
+            <span>Created by Rejwana Akter.</span>
+            <span>Spark Mart</span>
+        </div>
+    </footer>
+
+    <script th:fragment="scripts" th:src="@{/js/site.js}"></script>
+</body>
+
+</html>

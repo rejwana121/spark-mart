@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head('Track Order | Spark Mart')}"></head>
+<body>
+<header th:replace="~{fragments/site :: header}"></header>
+<main class="page narrow">
+    <section class="page-heading">
+        <div>
+            <h1>Track Order</h1>
+            <p>Enter order ID and phone or email from checkout.</p>
+        </div>
+    </section>
+    <form th:action="@{/track-order}" method="post" class="stacked-form">
+        <label>Order ID<input name="orderNumber" th:value="${orderNumber}" placeholder="SPK-20260629-1234" required></label>
+        <label>Phone or email<input name="contact" th:value="${contact}" required></label>
+        <button class="button primary" type="submit">Track</button>
+    </form>
+    <p class="alert" th:if="${notFound}">No matching order found.</p>
+    <section class="confirmation" th:if="${order != null}">
+        <h2 th:text="${order.orderNumber}">Order</h2>
+        <div class="status-grid">
+            <div><span>Payment</span><strong th:text="${order.paymentStatus}">Payment</strong></div>
+            <div><span>Fulfillment</span><strong th:text="${order.fulfillmentStatus}">Status</strong></div>
+            <div><span>Total</span><strong th:text="'Tk ' + ${order.total}">Tk 0</strong></div>
+            <div><span>Delivery</span><strong th:text="${order.area}">Area</strong></div>
+        </div>
+    </section>
+</main>
+<div th:replace="~{fragments/site :: cartFab}"></div>
+<footer th:replace="~{fragments/site :: footer}"></footer>
+<script th:replace="~{fragments/site :: scripts}"></script>
+</body>
+</html>

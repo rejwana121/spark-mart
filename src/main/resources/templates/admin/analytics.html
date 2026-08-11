@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin :: head('Analytics | Spark Mart Admin')}"></head>
+<body class="admin-body">
+<aside th:replace="~{fragments/admin :: sidebar}"></aside>
+<main class="admin-main">
+    <div class="admin-title"><div><h1>Analytics</h1><p>Orders, revenue, customers, products, categories, sales charts, and inventory overview.</p></div></div>
+    <section class="metric-grid">
+        <article><span>Total Orders</span><strong th:text="${totalOrders}">0</strong></article>
+        <article><span>Total Revenue</span><strong th:text="'Tk ' + ${totalRevenue}">0</strong></article>
+        <article><span>Total Customers</span><strong th:text="${totalCustomers}">0</strong></article>
+        <article><span>Inventory Items</span><strong th:text="${#lists.size(products)}">0</strong></article>
+    </section>
+    <section class="admin-section table-wrap">
+        <h2>Top Selling Products</h2>
+        <table><tbody><tr th:each="entry : ${topProducts}"><td th:text="${entry.key}">Product</td><td th:text="${entry.value + ' sold'}">0</td></tr></tbody></table>
+    </section>
+    <section class="admin-section table-wrap">
+        <h2>Category Sales Chart</h2>
+        <table><tbody><tr th:each="entry : ${categoryRevenue}"><td th:text="${entry.key}">Category</td><td th:text="'Tk ' + ${entry.value}">0</td></tr></tbody></table>
+    </section>
+    <section class="admin-section table-wrap">
+        <h2>Revenue / Inventory Overview</h2>
+        <table><thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Rating</th></tr></thead>
+        <tbody><tr th:each="product : ${products}"><td th:text="${product.name}">Product</td><td th:text="${product.categoryName}">Category</td><td th:text="${product.stock}">0</td><td th:text="${product.rating}">0</td></tr></tbody></table>
+    </section>
+</main>
+</body>
+</html>

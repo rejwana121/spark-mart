@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head('Categories | Spark Mart')}"></head>
+<body>
+<header th:replace="~{fragments/site :: header}"></header>
+<main class="page">
+    <section class="page-heading">
+        <div>
+            <h1>Categories</h1>
+            <p>Browse Spark Mart by grocery, skincare, girls clothes, and electronics.</p>
+        </div>
+    </section>
+    <div class="category-grid">
+        <a class="category-card" th:each="category : ${categories}" th:href="@{/category/{slug}(slug=${category.slug()})}">
+            <span class="category-pill" th:text="${category.name()}">Category</span>
+            <h2 th:text="${category.name()}">Category</h2>
+            <p th:text="${category.description()}">Description</p>
+        </a>
+    </div>
+</main>
+<div th:replace="~{fragments/site :: cartFab}"></div>
+<footer th:replace="~{fragments/site :: footer}"></footer>
+<script th:replace="~{fragments/site :: scripts}"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+package com.example.spark_mart;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SparkMartApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SparkMartApplication.class, args);
+	}
+
+}

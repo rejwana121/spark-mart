@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head('My Addresses | Spark Mart')}"></head>
+<body>
+<header th:replace="~{fragments/site :: header}"></header>
+<main class="page">
+    <section class="page-heading">
+        <div>
+            <h1>My Addresses</h1>
+            <p>Save multiple delivery addresses so checkout is faster next time.</p>
+        </div>
+    </section>
+
+    <form th:action="@{/addresses/add}" method="post" class="form-grid" style="margin-bottom:24px;">
+        <input type="text" name="label" placeholder="Label (e.g. Home, Office)" required />
+        <input type="text" name="addressLine" placeholder="Address line" required />
+        <input type="text" name="area" placeholder="Area" />
+        <input type="text" name="phone" placeholder="Phone" />
+        <button type="submit" class="button primary compact-button">
+            <i class="fa-solid fa-plus"></i><span>Add Address</span>
+        </button>
+    </form>
+
+    <p class="empty-state" th:if="${#lists.isEmpty(addresses)}">You have no saved addresses yet.</p>
+    <div class="table-wrap" th:unless="${#lists.isEmpty(addresses)}">
+        <table>
+            <thead>
+            <tr><th>Label</th><th>Address</th><th>Area</th><th>Phone</th><th></th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="a : ${addresses}">
+                <td data-label="Label" th:text="${a.label}">Label</td>
+                <td data-label="Address" th:text="${a.addressLine}">Address</td>
+                <td data-label="Area" th:text="${a.area}">Area</td>
+                <td data-label="Phone" th:text="${a.phone}">Phone</td>
+                <td>
+                    <form th:action="@{/addresses/{id}/delete(id=${a.id})}" method="post">
+                        <button type="submit" class="button ghost compact-button">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{fragments/site :: footer}"></footer>
+<script th:replace="~{fragments/site :: scripts}"></script>
+</body>
+</html>

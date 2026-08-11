@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head('Contact | Spark Mart')}"></head>
+<body>
+<header th:replace="~{fragments/site :: header}"></header>
+<main class="page narrow">
+    <section class="confirmation">
+        <span class="category-pill">Help</span>
+        <h1>Contact Spark Mart</h1>
+        <p>For order support, use the tracking page first. For catalog or delivery questions, contact the admin team.</p>
+        <div class="status-grid">
+            <div><span>Email</span><strong>support@sparkmart.local</strong></div>
+            <div><span>Hours</span><strong>10:00 AM - 8:00 PM</strong></div>
+        </div>
+    </section>
+</main>
+<div th:replace="~{fragments/site :: cartFab}"></div>
+<footer th:replace="~{fragments/site :: footer}"></footer>
+<script th:replace="~{fragments/site :: scripts}"></script>
+</body>
+</html>

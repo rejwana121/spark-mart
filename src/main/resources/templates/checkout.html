@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head('Checkout | Spark Mart')}"></head>
+<body>
+<header th:replace="~{fragments/site :: header}"></header>
+<main class="page checkout-layout">
+    <section>
+        <div class="page-heading compact">
+            <div>
+                <h1>Checkout</h1>
+                <p>Step 1: customer and delivery information.</p>
+            </div>
+        </div>
+        <p class="alert" th:if="${error}" th:text="${error}">Error</p>
+        <form th:action="@{/checkout/info}" th:object="${checkoutForm}" method="post" class="stacked-form">
+            <label>Name<input th:field="*{name}" required></label>
+            <label>Email<input th:field="*{email}" type="email" required></label>
+            <label>Phone<input th:field="*{phone}" required></label>
+            <label>Delivery address<textarea th:field="*{address}" required></textarea></label>
+            <label>District / area<input th:field="*{area}" placeholder="Saved from profile if available"></label>
+            <label>Order note<textarea th:field="*{note}" placeholder="Optional delivery instruction saved for next checkout"></textarea></label>
+            <label class="check-row checkout-consent professional-checkbox-row">
+                <input th:field="*{consent}" type="checkbox" required>
+                <span>I agree to be contacted about this order.</span>
+            </label>
+            <button class="button primary" type="submit"><i class="fa-solid fa-credit-card"></i><span>Continue to Payment</span></button>
+        </form>
+    </section>
+    <aside class="order-panel">
+        <h2>Order Summary</h2>
+        <div class="drawer-item" th:each="item : ${cart.items}">
+            <img th:src="${item.imageUrl}" th:alt="${item.name}">
+            <div>
+                <strong th:text="${item.name}">Product</strong>
+                <span th:text="'Qty ' + ${item.quantity} + ' - Tk ' + ${item.lineTotal}">Line</span>
+            </div>
+        </div>
+        <div class="drawer-total">
+            <span>Subtotal</span>
+            <strong th:text="'Tk ' + ${cart.subtotal}">Tk 0</strong>
+            <span>Delivery charge</span>
+            <strong th:text="'Tk ' + ${cart.deliveryCharge}">Tk 0</strong>
+            <span>Total</span>
+            <strong th:text="'Tk ' + ${cart.grandTotal}">Tk 0</strong>
+        </div>
+    </aside>
+</main>
+<div th:replace="~{fragments/site :: cartFab}"></div>
+<footer th:replace="~{fragments/site :: footer}"></footer>
+<script th:replace="~{fragments/site :: scripts}"></script>
+</body>
+</html>

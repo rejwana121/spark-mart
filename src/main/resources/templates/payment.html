@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head('Payment | Spark Mart')}"></head>
+<body>
+<header th:replace="~{fragments/site :: header}"></header>
+<main class="payment-market-layout shell">
+    <section class="payment-workspace">
+        <p class="alert" th:if="${error}" th:text="${error}">Error</p>
+        <form th:action="@{/payment/confirm}" method="post" class="payment-daraz-form" data-payment-form>
+            <div class="payment-tabs" role="radiogroup" aria-label="Payment methods">
+                <label class="payment-tab is-active" data-payment-tab="card">
+                    <input type="radio" name="paymentMethod" value="card" checked>
+                    <span class="pay-icon"><i class="fa-regular fa-credit-card"></i></span>
+                    <strong>Credit/Debit Card</strong>
+                    <small>Credit/Debit Card</small>
+                </label>
+                <label class="payment-tab" data-payment-tab="nagad">
+                    <input type="radio" name="paymentMethod" value="nagad">
+                    <span class="pay-icon nagad-icon">নগদ</span>
+                    <strong>Nagad</strong>
+                    <small>Nagad</small>
+                </label>
+                <label class="payment-tab" data-payment-tab="bkash">
+                    <input type="radio" name="paymentMethod" value="bkash">
+                    <span class="pay-icon bkash-icon"><i class="fa-solid fa-paper-plane"></i></span>
+                    <strong>Save bKash Account</strong>
+                    <small>bKash Wallet</small>
+                </label>
+                <label class="payment-tab" data-payment-tab="cod">
+                    <input type="radio" name="paymentMethod" value="cod">
+                    <span class="pay-icon"><i class="fa-solid fa-money-bill-wave"></i></span>
+                    <strong>Cash on Delivery</strong>
+                    <small>Cash on Delivery</small>
+                </label>
+                <label class="payment-tab disabled-tab">
+                    <span class="pay-icon"><i class="fa-regular fa-calendar-days"></i></span>
+                    <strong>Installment</strong>
+                    <small>Coming soon</small>
+                </label>
+                <label class="payment-tab disabled-tab">
+                    <span class="pay-icon"><i class="fa-solid fa-rocket"></i></span>
+                    <strong>Rocket</strong>
+                    <small>Coming soon</small>
+                </label>
+            </div>
+
+            <div class="payment-content-card">
+                <div class="payment-section" data-payment-section="card">
+                    <div class="card-logos">American Express &nbsp; ● &nbsp; Mastercard &nbsp; VISA &nbsp; UnionPay</div>
+                    <label><span>* Card number</span><input name="cardNumber" placeholder="Card number" inputmode="numeric"></label>
+                    <label><span>* Name on card</span><input name="cardholderName" placeholder="Name on card"></label>
+                    <div class="two-field-row">
+                        <label><span>* Expiry date</span><input name="expiryDate" placeholder="MM/YY"></label>
+                        <label><span>* CVV</span><input name="cvv" placeholder="CVV" inputmode="numeric"></label>
+                    </div>
+                    <label class="check-row save-card"><input type="checkbox" checked> Save Card</label>
+                    <button class="payment-pay-btn" type="submit"><i class="fa-solid fa-lock"></i><span>Pay Now</span></button>
+                </div>
+
+                <div class="payment-section is-hidden" data-payment-section="nagad">
+                    <p>Please ensure the following before you proceed:</p>
+                    <ol>
+                        <li>You have an activated Nagad Account</li>
+                        <li>You can receive an OTP on your registered Mobile Number</li>
+                        <li>You have sufficient balance in your account to carry out the transaction</li>
+                    </ol>
+                    <label><span>Nagad number</span><input name="mobileNumber" type="tel" placeholder="01XXXXXXXXX"></label>
+                    <label><span>Transaction ID</span><input name="transactionId" placeholder="Demo transaction ID"></label>
+                    <button class="payment-pay-btn" type="submit"><i class="fa-solid fa-lock"></i><span>Pay Now</span></button>
+                </div>
+
+                <div class="payment-section is-hidden" data-payment-section="bkash">
+                    <p>1) Users paying with bKash for the first time: enter bKash Wallet Number and OTP for successful account saving.</p>
+                    <p>2) For all subsequent users: enter PIN to make payment.</p>
+                    <p>Please note that one bKash account can only be saved in one Spark Mart account.</p>
+                    <label><span>bKash number</span><input name="mobileNumber" type="tel" placeholder="01XXXXXXXXX"></label>
+                    <label><span>Transaction ID</span><input name="transactionId" placeholder="Demo transaction ID"></label>
+                    <button class="payment-pay-btn" type="submit"><i class="fa-solid fa-lock"></i><span>Pay Now</span></button>
+                </div>
+
+                <div class="payment-section is-hidden" data-payment-section="cod">
+                    <ul class="cod-notes">
+                        <li>You may pay in cash to our courier upon receiving your parcel at the doorstep.</li>
+                        <li>Before receiving, confirm that the parcel is from Spark Mart.</li>
+                        <li>Confirm order number, sender information and tracking number on the parcel.</li>
+                    </ul>
+                    <button class="payment-pay-btn" type="submit"><i class="fa-solid fa-check"></i><span>Confirm Order</span></button>
+                </div>
+            </div>
+        </form>
+    </section>
+    <aside class="payment-summary-card">
+        <h2>Order Summary</h2>
+        <p><span th:text="${'Subtotal(' + cart.itemCount + ' items and shipping fee included)'}">Subtotal</span>
+            <strong th:text="'৳ ' + ${cart.grandTotal}">৳0</strong></p>
+        <div class="cash-fee-line" data-cash-fee>
+            <span>Cash Payment Fee</span><strong>৳ 20</strong>
+        </div>
+        <div class="payment-total-line">
+            <span>Total Amount</span>
+            <strong th:text="'৳ ' + ${cart.grandTotal}">৳0</strong>
+        </div>
+    </aside>
+</main>
+<footer th:replace="~{fragments/site :: footer}"></footer>
+<script th:replace="~{fragments/site :: scripts}"></script>
+</body>
+</html>

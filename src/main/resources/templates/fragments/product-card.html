@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<article class="product-card market-product-card" th:fragment="card(product)">
+    <a class="product-media market-product-media" th:href="@{/product/{id}(id=${product.id})}">
+        <img th:src="${product.imageUrl}" th:alt="${product.name}">
+        <span class="stock-badge" th:classappend="${product.inStock} ? ' ok' : ' warn'" th:text="${product.stockLabel}">Stock</span>
+        <span class="ai-badge" th:if="${product.aiSuggested}">AI</span>
+    </a>
+    <div class="product-body market-product-body">
+        <h3><a th:href="@{/product/{id}(id=${product.id})}" th:text="${product.name}">Product name</a></h3>
+        <div class="market-price-row">
+            <strong class="price" th:text="'৳' + ${product.price}">৳0</strong>
+            <span class="discount-tag">-25%</span>
+        </div>
+        <div class="market-rating-row">
+            <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></span>
+            <span th:text="${'(' + #numbers.formatDecimal(product.rating * 20, 0, 0) + ')'}">(99)</span>
+        </div>
+        <div class="product-bottom market-card-actions">
+            <a class="tiny-icon-btn" th:href="@{/product/{id}(id=${product.id})}" aria-label="View details" title="View details"><i class="fa-regular fa-eye"></i></a>
+            <form th:action="@{/cart/add}" method="post" class="inline-form product-add-form">
+                <input type="hidden" name="productId" th:value="${product.id}">
+                <button class="tiny-icon-btn add-btn" type="submit" th:disabled="${!product.inStock}" aria-label="Add to cart" title="Add to cart"><i class="fa-solid fa-cart-plus"></i></button>
+            </form>
+        </div>
+    </div>
+</article>
+</body>
+</html>

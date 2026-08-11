@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/site :: head(${product.name + ' | Spark Mart'})}"></head>
+<body>
+<header th:replace="~{fragments/site :: header}"></header>
+<main class="page product-market-page">
+    <section class="daraz-product-detail">
+        <div class="product-gallery-panel">
+            <img class="main-product-image" th:src="${product.imageUrl}" th:alt="${product.name}">
+            <div class="thumb-row">
+                <button type="button" aria-label="Previous image"><i class="fa-solid fa-chevron-left"></i></button>
+                <img th:src="${product.imageUrl}" th:alt="${product.name}">
+                <img th:src="${product.imageUrl}" th:alt="${product.name}">
+                <img th:src="${product.imageUrl}" th:alt="${product.name}">
+                <button type="button" aria-label="Next image"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <div class="product-info-panel">
+            <h1 th:text="${product.name}">Product</h1>
+            <div class="product-social-row">
+                <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></span>
+                <a href="#details" th:text="${'Ratings ' + #numbers.formatDecimal(product.rating * 20, 0, 0)}">Ratings</a>
+                <span>|</span>
+                <span>19 Answered Questions</span>
+                <button type="button" aria-label="Share"><i class="fa-solid fa-share-nodes"></i></button>
+                <button type="button" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button>
+            </div>
+            <p class="brand-line" th:text="${'Brand: No Brand | ' + product.categoryName}">Brand</p>
+            <div class="price-block">
+                <strong th:text="'৳ ' + ${product.price}">৳0</strong>
+                <span>৳300</span>
+                <em>-56%</em>
+            </div>
+            <div class="promotion-line"><span>Promotions</span><strong>Min. spend ৳199</strong></div>
+            <div class="variant-line"><span>Color Family</span><strong>Standard</strong></div>
+            <div class="quantity-row">
+                <span>Quantity</span>
+                <button type="button" data-qty-minus aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                <input data-qty-master type="number" min="1" th:max="${product.stock}" value="1" aria-label="Quantity">
+                <button type="button" data-qty-plus aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+            </div>
+            <div class="detail-action-row">
+                <form th:action="@{/cart/buy-now}" method="post" class="inline-form">
+                    <input type="hidden" name="productId" th:value="${product.id}">
+                    <input type="hidden" name="quantity" value="1" data-qty-target>
+                    <button class="detail-buy-btn" type="submit" th:disabled="${!product.inStock}" aria-label="Buy now" title="Buy Now"><i class="fa-solid fa-bag-shopping"></i><span>Buy Now</span></button>
+                </form>
+                <form th:action="@{/cart/add}" method="post" class="inline-form">
+                    <input type="hidden" name="productId" th:value="${product.id}">
+                    <input type="hidden" name="quantity" value="1" data-qty-target>
+                    <button class="detail-cart-btn" type="submit" th:disabled="${!product.inStock}" aria-label="Add to cart" title="Add to Cart"><i class="fa-solid fa-cart-plus"></i><span>Add to Cart</span></button>
+                </form>
+            </div>
+            <div id="details" class="product-description-box">
+                <h2>Product Details</h2>
+                <p th:text="${product.description}">Description</p>
+                <p><strong>Stock:</strong> <span th:text="${product.stockLabel}">Stock</span></p>
+                <p><strong>Category:</strong> <span th:text="${product.categoryName}">Category</span></p>
+            </div>
+        </div>
+        <aside class="delivery-seller-panel">
+            <div class="delivery-card">
+                <h3>Delivery Options</h3>
+                <p><i class="fa-solid fa-location-dot"></i> Dhaka, Savar, Ashulia Stand</p>
+                <p><i class="fa-solid fa-truck-fast"></i> Standard Delivery <strong>৳ 85</strong></p>
+                <p><i class="fa-solid fa-money-bill-wave"></i> Cash on Delivery Available</p>
+            </div>
+            <div class="delivery-card">
+                <h3>Return &amp; Warranty</h3>
+                <p><i class="fa-solid fa-rotate-left"></i> Change of Mind</p>
+                <p>14 days easy return</p>
+                <p>Warranty not available</p>
+            </div>
+            <div class="seller-card">
+                <span>Sold by</span>
+                <strong>Spark Seller Center</strong>
+                <div class="seller-stats">
+                    <div><b>81%</b><small>Positive Seller Ratings</small></div>
+                    <div><b>100%</b><small>Ship on Time</small></div>
+                </div>
+                <a th:href="@{/seller/register}"><i class="fa-solid fa-store"></i> GO TO STORE</a>
+            </div>
+        </aside>
+    </section>
+
+    <section class="section shell">
+        <div class="market-section-title">
+            <h2>Related Products</h2>
+            <span>More from this category</span>
+        </div>
+        <div class="product-grid market-product-grid">
+            <th:block th:each="related : ${relatedProducts}">
+                <article th:replace="~{fragments/product-card :: card(${related})}"></article>
+            </th:block>
+        </div>
+    </section>
+</main>
+<div th:replace="~{fragments/site :: cartFab}"></div>
+<footer th:replace="~{fragments/site :: footer}"></footer>
+<script th:replace="~{fragments/site :: scripts}"></script>
+</body>
+</html>
