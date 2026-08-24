@@ -47,6 +47,8 @@ docker compose up --build -d
 
 ### Environment Variables
 
+
+
 | Variable | Default | Description |
 | :--- | :--- | :--- |
 | `DB_HOST` | `mysql` *(Docker)* / `localhost` | MySQL host address |
@@ -56,6 +58,7 @@ docker compose up --build -d
 | `DB_PASSWORD` | `root` | Database password |
 | `SPARKMART_ADMIN_USERNAME` | `admin@sparkmart.com` | Default admin email |
 | `SPARKMART_ADMIN_PASSWORD` | `admin123` | Default admin password |
+
 
 ---
 
