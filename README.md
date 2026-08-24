@@ -10,7 +10,7 @@ A full-stack e-commerce web application built with Spring Boot 4.1, Thymeleaf, S
 - **Hibernate ORM 7.4** with `ddl-auto=update`
 - **Flyway 10.20** for controlled schema migrations
 - **JUnit 5 + Mockito + MockMvc** for testing
-- **Docker** configuration exists (Dockerfile + docker-compose.yml) but was not physically tested
+- **Docker** configuration exists (Dockerfile + docker-compose.yml) but fully tested and verified with Docker Compose
 
 ## Prerequisites
 
