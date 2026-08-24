@@ -24,7 +24,7 @@ A full-stack e-commerce web application built with **Spring Boot 4.1**, **Thymel
 
 ### Setup & Execution
 
-**Option 1: Run with Docker Compose (Recommended)**
+#### Option 1: Run with Docker Compose (Recommended)
 ```bash
 # Start all services (App + MySQL 8.0 + phpMyAdmin)
 docker compose up --build -d
@@ -32,7 +32,7 @@ docker compose up --build -d
 * **Application URL:** `http://localhost:8080`
 * **phpMyAdmin URL:** `http://localhost:8085`
 
-**Option 2: Run Locally via Maven**
+#### Option 2: Run Locally via Maven
 ```bash
 # Run test suite (77 tests)
 ./mvnw clean test
@@ -46,6 +46,7 @@ docker compose up --build -d
 ---
 
 ### Environment Variables
+
 | Variable | Default | Description |
 | :--- | :--- | :--- |
 | `DB_HOST` | `mysql` *(Docker)* / `localhost` | MySQL host address |
@@ -67,7 +68,7 @@ docker compose up --build -d
 
 ### Routes & Endpoints
 
-**Public Storefront**
+#### Public Storefront
 * `/` — Home page with featured products, categories, and search
 * `/category/{slug}` — Category listing with filters
 * `/categories` — All categories
@@ -75,7 +76,7 @@ docker compose up --build -d
 * `/track-order` — Order tracking
 * `/contact` — Contact page
 
-**Customer**
+#### Customer
 * `/login` — Customer login
 * `/register` — Customer registration
 * `/seller/register` — Seller registration
@@ -85,7 +86,7 @@ docker compose up --build -d
 * `/orders` — Customer order history
 * `/profile` — Customer profile management
 
-**Admin / Seller**
+#### Admin / Seller
 * `/admin/login` — Admin & Seller login
 * `/admin/dashboard` — Overview dashboard with business statistics
 * `/admin/products` — Product catalog management
@@ -96,7 +97,7 @@ docker compose up --build -d
 * `/admin/analytics` — Business intelligence and analytics
 * `/admin/inventory` — Stock and inventory tracking
 
-**Actuator & Monitoring**
+#### Actuator & Monitoring
 * `/actuator/health` — Health check endpoint (requires HTTP Basic authentication with admin credentials)
 
 ---
@@ -120,5 +121,5 @@ Authoritative chapter documents located in the `docs/` directory:
 
 ### Author
 * **Created by:** Rejwana Akter
-* **Live Showcase:** https://rejwana121.github.io/spark-mart/
-* **Repository:** https://github.com/rejwana121/spark-mart
+* **Live Showcase:** [https://rejwana121.github.io/spark-mart/](https://rejwana121.github.io/spark-mart/)
+* **Repository:** [https://github.com/rejwana121/spark-mart](https://github.com/rejwana121/spark-mart)
