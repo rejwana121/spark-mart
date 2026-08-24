@@ -57,8 +57,6 @@ docker compose up --build -d
 | `SPARKMART_ADMIN_USERNAME` | `admin@sparkmart.com` | Default admin email |
 | `SPARKMART_ADMIN_PASSWORD` | `admin123` | Default admin password |
 
----
-
 ### Profiles
 * **`default` / `dev`:** Connects to local environment configurations.
 * **`prod`:** Configured for isolated container execution via environment variables.
