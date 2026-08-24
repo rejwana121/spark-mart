@@ -5,7 +5,7 @@ A full-stack e-commerce web application built with **Spring Boot 4.1**, **Thymel
 ---
 
 ### Tech Stack
-* **Core Platform:** Java 25 (Virtual Threads enabled)
+* **Core Platform:** Java 26 (Virtual Threads enabled)
 * **Framework:** Spring Boot 4.1.0 (Web MVC, Thymeleaf, Data JPA, Security, Actuator)
 * **Database Layer:** MySQL 8.0 containerized with persistent storage (`mysql` service)
 * **Database GUI:** phpMyAdmin containerized interface (http://localhost:8085)
@@ -17,7 +17,7 @@ A full-stack e-commerce web application built with **Spring Boot 4.1**, **Thymel
 
 ### Prerequisites
 * Docker Desktop installed and running
-* Java 25+ installed
+* Java 26+ installed
 * Maven (or the included `./mvnw` wrapper)
 
 ---
