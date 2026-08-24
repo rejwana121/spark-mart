@@ -1,150 +1,115 @@
 # Spark Mart
 
-A full-stack e-commerce web application built with **Spring Boot 4.1**, **Thymeleaf**, **Spring Data JPA**, **Spring Security**, and **MySQL 8.0** — containerized and verified using **Docker Compose**. The project implements a storefront architecture featuring customer, seller, and admin roles, transactional checkout flows, and automated data migrations.
+A full-stack e-commerce web application built with **Spring Boot 4.1**, **Thymeleaf**, **Spring Data JPA**, **Spring Security**, and **MySQL 8.0** — containerized and verified using **Docker Compose**. The project implements a Daraz-inspired storefront with customer, seller, and admin roles, cart/checkout/payment flows, order management, and an AI product suggestion feature.
 
 ---
 
 ### Tech Stack
-
 * **Core Platform:** Java 25 (Virtual Threads enabled)
 * **Framework:** Spring Boot 4.1.0 (Web MVC, Thymeleaf, Data JPA, Security, Actuator)
-* **Database Layer:** MySQL 8.0 containerized with persistent volume storage
-* **Database Management:** phpMyAdmin containerized interface (`http://localhost:8085`)
+* **Database Layer:** MySQL 8.0 containerized with persistent storage (`mysql` service)
+* **Database GUI:** phpMyAdmin containerized interface (http://localhost:8085)
 * **ORM & Migrations:** Hibernate 7.4 (`ddl-auto=update`), Flyway 10.20
 * **Containerization:** Docker & Docker Compose
-* **Testing:** JUnit 5, Mockito, MockMvc (77 test suites)
+* **Testing:** JUnit 5, Mockito, MockMvc (77 tests passed)
 
 ---
 
 ### Prerequisites
-
 * Docker Desktop installed and running
-* Java 25+ SDK
-* Apache Maven (or bundled `./mvnw`)
+* Java 25+ installed
+* Maven (or the included `./mvnw` wrapper)
 
 ---
 
 ### Setup & Execution
 
-#### 1. Multi-Container Docker Setup (Recommended)
-
+#### Option 1: Run with Docker Compose (Recommended)
 ```bash
+# Start all services (App + MySQL 8.0 + phpMyAdmin)
 docker compose up --build -d
 ```
+* **Application URL:** http://localhost:8080
+* **phpMyAdmin URL:** http://localhost:8085
 
-* **Application Endpoint:** `http://localhost:8080`
-* **Database Administration:** `http://localhost:8085`
-
-#### 2. Local Maven Execution
-
+#### Option 2: Run Locally via Maven
 ```bash
-# Run unit & integration test suites
+# Run test suite (77 tests)
 ./mvnw clean test
 
-# Launch local Spring Boot runtime
+# Run application locally
 ./mvnw spring-boot:run
 ```
+
+> *The database `sparkmart` initializes automatically. Hibernate manages core entities, while Flyway manages schema migrations for `tags` and `product_tags` tables.*
 
 ---
 
 ### Environment Variables
 
-<table>
-  <thead>
-    <tr>
-      <th>Variable</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>DB_HOST</code></td>
-      <td><code>mysql</code> (Docker) / <code>localhost</code></td>
-      <td>Database host address</td>
-    </tr>
-    <tr>
-      <td><code>DB_PORT</code></td>
-      <td><code>3306</code></td>
-      <td>Database port connection</td>
-    </tr>
-    <tr>
-      <td><code>DB_NAME</code></td>
-      <td><code>sparkmart</code></td>
-      <td>Target schema name</td>
-    </tr>
-    <tr>
-      <td><code>DB_USERNAME</code></td>
-      <td><code>root</code></td>
-      <td>Database superuser username</td>
-    </tr>
-    <tr>
-      <td><code>DB_PASSWORD</code></td>
-      <td><code>root</code></td>
-      <td>Database superuser password</td>
-    </tr>
-    <tr>
-      <td><code>SPARKMART_ADMIN_USERNAME</code></td>
-      <td><code>admin@sparkmart.com</code></td>
-      <td>Administrative seed identity</td>
-    </tr>
-    <tr>
-      <td><code>SPARKMART_ADMIN_PASSWORD</code></td>
-      <td><code>admin123</code></td>
-      <td>Administrative access credential</td>
-    </tr>
-  </tbody>
-</table>
+| Variable | Default | Description |
+| :--- | :--- | :--- |
+| `DB_HOST` | `mysql` (Docker) / `localhost` | MySQL host address |
+| `DB_PORT` | `3306` | MySQL internal port |
+| `DB_NAME` | `sparkmart` | Database name |
+| `DB_USERNAME` | `root` | Database username |
+| `DB_PASSWORD` | `root` | Database password |
+| `SPARKMART_ADMIN_USERNAME` | `admin@sparkmart.com` | Default admin email |
+| `SPARKMART_ADMIN_PASSWORD` | `admin123` | Default admin password |
 
 ---
 
-### Execution Profiles
+### Profiles
+* **`default` / `dev`:** Connects to local environment configurations.
+* **`prod`:** Configured for isolated container execution via environment variables.
 
-* **`dev` / `default`:** Local development configuration binding.
-* **`prod`:** Production-ready profile strictly driven by injected environment variables.
-* **Activation:** Pass `--spring.profiles.active=dev` or `--spring.profiles.active=prod`
+*Activate via:* `--spring.profiles.active=dev` or `--spring.profiles.active=prod`
 
 ---
 
 ### Routes & Endpoints
 
-#### Storefront & Catalog
-* `/` — Landing showcase, curated categories, and index search
-* `/category/{slug}` — Parametric category catalog with faceted navigation
-* `/categories` — Global department index
-* `/product/{id}` — Granular product specifications and inventory status
-* `/track-order` — Real-time fulfillment shipment tracker
-* `/contact` — Support inquiry portal
+#### Public Storefront
+* `/` — Home page with featured products, categories, and search
+* `/category/{slug}` — Category listing with filters
+* `/categories` — All categories
+* `/product/{id}` — Product detail page
+* `/track-order` — Order tracking
+* `/contact` — Contact page
 
-#### Customer Management & Checkout
-* `/login` & `/register` — Customer authentication and lifecycle onboarding
-* `/seller/register` — Merchant enrollment portal
-* `/cart` — Stateful session cart management
-* `/checkout` & `/payment` — Transactional checkout workflow
-* `/orders` — Historical fulfillment logs
-* `/profile` — Customer identity settings
+#### Customer
+* `/login` — Customer login
+* `/register` — Customer registration
+* `/seller/register` — Seller registration
+* `/cart` — Shopping cart
+* `/checkout` — Checkout form
+* `/payment` — Payment processing
+* `/orders` — Customer order history
+* `/profile` — Customer profile management
 
-#### Administrative Control Center
-* `/admin/login` — Administrative console authentication
-* `/admin/dashboard` — Executive business performance metrics
-* `/admin/products` & `/admin/categories` — Catalog lifecycle orchestration
-* `/admin/orders` & `/admin/payments` — Financial auditing and fulfillment management
-* `/admin/inventory` & `/admin/analytics` — Stock allocation and business intelligence
+#### Admin / Seller
+* `/admin/login` — Admin & Seller login
+* `/admin/dashboard` — Overview dashboard with business statistics
+* `/admin/products` — Product catalog management
+* `/admin/orders` — Order fulfillment and management
+* `/admin/categories` — Category hierarchy management
+* `/admin/customers` — Customer management
+* `/admin/payments` — Transaction and payment records
+* `/admin/analytics` — Business intelligence and analytics
+* `/admin/inventory` — Stock and inventory tracking
 
-#### Diagnostics & Actuator
-* `/actuator/health` — Service availability monitor (Protected by HTTP Basic auth)
+#### Actuator & Monitoring
+* `/actuator/health` — Health check endpoint (requires HTTP Basic authentication with admin credentials)
 
 ---
 
-### Architecture & Deployment Verification
-
-The architecture runs as a unified multi-service network orchestrated via `docker-compose.yml`. The Spring Boot service connects over isolated Docker bridge networking to the dedicated MySQL 8.0 engine, backed by isolated volumes for transactional integrity and automatic Flyway schema baseline application.
+### Docker & Deployment Status
+The project features a verified multi-container architecture via `docker-compose.yml`, orchestrating the Spring Boot application (port 8080), MySQL 8.0 (port 3306), and phpMyAdmin (port 8085) with isolated networking, persistent database volumes, and healthchecks.
 
 ---
 
-### Reference Course Chapters
-
-Comprehensive architectural and engineering documentation located in `docs/`:
+### Course Documentation (DOCX References)
+Authoritative chapter documents located in the `docs/` directory:
 * **Chapter 1:** The Modern Spring Landscape
 * **Chapter 2:** Dynamic Interfaces with Thymeleaf and Bootstrap
 * **Chapter 3:** Persistence with Relational Databases
@@ -155,7 +120,7 @@ Comprehensive architectural and engineering documentation located in `docs/`:
 
 ---
 
-### Project Maintainer
-* **Author:** Rejwana Akter
+### Author
+* **Created by:** Rejwana Akter
 * **Live Showcase:** [https://rejwana121.github.io/spark-mart/](https://rejwana121.github.io/spark-mart/)
 * **Repository:** [https://github.com/rejwana121/spark-mart](https://github.com/rejwana121/spark-mart)
