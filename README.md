@@ -1,6 +1,6 @@
 # Spark Mart
 
-A full-stack e-commerce web application built with Spring Boot 4.1, Thymeleaf, Spring Data JPA, Spring Security, and MySQL (XAMPP). The project implements a Daraz-inspired storefront with customer, seller, and admin roles, cart/checkout/payment flows, order management, and an AI product suggestion feature.
+A full-stack e-commerce web application built with Spring Boot 4.1, Thymeleaf, Spring Data JPA, Spring Security, and MySQL 8.0 & Docker Compose. The project implements a Daraz-inspired storefront with customer, seller, and admin roles, cart/checkout/payment flows, order management, and an AI product suggestion feature.
 
 ## Tech Stack
 
@@ -14,7 +14,7 @@ A full-stack e-commerce web application built with Spring Boot 4.1, Thymeleaf, S
 
 ## Prerequisites
 
-1. XAMPP with MySQL running on localhost:3306
+1. Docker Desktop installed and running
 2. Java 25+ installed
 3. Maven (or use the included `mvnw.cmd` wrapper)
 
