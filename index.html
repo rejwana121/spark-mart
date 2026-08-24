@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spark Mart - Documentation</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8f9fa; color: #212529; }
+    .container { max-width: 900px; }
+    pre { background-color: #212529; color: #f8f9fa; padding: 1rem; border-radius: 6px; }
+    code { font-size: 0.9em; }
+    .badge-tech { background-color: #0d6efd; color: white; margin-right: 4px; font-weight: normal; }
+  </style>
+</head>
+<body class="py-5">
+  <div class="container bg-white p-4 p-md-5 rounded shadow-sm border">
+    <h1 class="border-bottom pb-2 mb-3">Spark Mart</h1>
+    <p class="lead">A full-stack e-commerce web application built with <strong>Spring Boot 4.1</strong>, <strong>Thymeleaf</strong>, <strong>Spring Data JPA</strong>, <strong>Spring Security</strong>, and <strong>MySQL 8.0</strong> — containerized and verified using <strong>Docker Compose</strong>. The project implements a Daraz-inspired storefront with customer, seller, and admin roles, cart/checkout/payment flows, order management, and an AI product suggestion feature.</p>
+    
+    <hr class="my-4">
+
+    <h3>Tech Stack</h3>
+    <ul>
+      <li><strong>Core Platform:</strong> Java 25 (Virtual Threads enabled)</li>
+      <li><strong>Framework:</strong> Spring Boot 4.1.0 (Web MVC, Thymeleaf, Data JPA, Security, Actuator)</li>
+      <li><strong>Database Layer:</strong> MySQL 8.0 containerized with persistent storage (<code>mysql</code> service)</li>
+      <li><strong>Database GUI:</strong> phpMyAdmin containerized interface (<a href="http://localhost:8085" target="_blank">http://localhost:8085</a>)</li>
+      <li><strong>ORM & Migrations:</strong> Hibernate 7.4 (<code>ddl-auto=update</code>), Flyway 10.20</li>
+      <li><strong>Containerization:</strong> Docker & Docker Compose</li>
+      <li><strong>Testing:</strong> JUnit 5, Mockito, MockMvc (77 tests passed)</li>
+    </ul>
+
+    <hr class="my-4">
+
+    <h3>Prerequisites</h3>
+    <ul>
+      <li>Docker Desktop installed and running</li>
+      <li>Java 25+ installed</li>
+      <li>Maven (or the included <code>./mvnw</code> wrapper)</li>
+    </ul>
+
+    <hr class="my-4">
+
+    <h3>Setup & Execution</h3>
+    <h5 class="mt-3">Option 1: Run with Docker Compose (Recommended)</h5>
+    <pre><code># Start all services (App + MySQL 8.0 + phpMyAdmin)
+docker compose up --build -d</code></pre>
+    <ul>
+      <li><strong>Application URL:</strong> <a href="http://localhost:8080" target="_blank">http://localhost:8080</a></li>
+      <li><strong>phpMyAdmin URL:</strong> <a href="http://localhost:8085" target="_blank">http://localhost:8085</a></li>
+    </ul>
+
+    <h5 class="mt-3">Option 2: Run Locally via Maven</h5>
+    <pre><code># Run test suite (77 tests)
+./mvnw clean test
+
+# Run application locally
+./mvnw spring-boot:run</code></pre>
+    <p class="text-muted small"><em>The database <code>sparkmart</code> initializes automatically. Hibernate manages core entities, while Flyway manages schema migrations for <code>tags</code> and <code>product_tags</code> tables.</em></p>
+
+    <hr class="my-4">
+
+    <h3>Environment Variables</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead class="table-light">
+          <tr><th>Variable</th><th>Default</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>DB_HOST</code></td><td><code>mysql</code> (Docker) / <code>localhost</code></td><td>MySQL host address</td></tr>
+          <tr><td><code>DB_PORT</code></td><td><code>3306</code></td><td>MySQL internal port</td></tr>
+          <tr><td><code>DB_NAME</code></td><td><code>sparkmart</code></td><td>Database name</td></tr>
+          <tr><td><code>DB_USERNAME</code></td><td><code>root</code></td><td>Database username</td></tr>
+          <tr><td><code>DB_PASSWORD</code></td><td><code>root</code></td><td>Database password</td></tr>
+          <tr><td><code>SPARKMART_ADMIN_USERNAME</code></td><td><code>admin@sparkmart.com</code></td><td>Default admin email</td></tr>
+          <tr><td><code>SPARKMART_ADMIN_PASSWORD</code></td><td><code>admin123</code></td><td>Default admin password</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="my-4">
+
+    <h3>Profiles</h3>
+    <ul>
+      <li><strong>default / dev:</strong> Connects to local environment configurations.</li>
+      <li><strong>prod:</strong> Configured for isolated container execution via environment variables.</li>
+    </ul>
+    <p>Activate via: <code>--spring.profiles.active=dev</code> or <code>--spring.profiles.active=prod</code></p>
+
+    <hr class="my-4">
+
+    <h3>Routes & Endpoints</h3>
+    <h5>Public Storefront</h5>
+    <ul>
+      <li><code>/</code> — Home page with featured products, categories, and search</li>
+      <li><code>/category/{slug}</code> — Category listing with filters</li>
+      <li><code>/categories</code> — All categories</li>
+      <li><code>/product/{id}</code> — Product detail page</li>
+      <li><code>/track-order</code> — Order tracking</li>
+      <li><code>/contact</code> — Contact page</li>
+    </ul>
+
+    <h5>Customer</h5>
+    <ul>
+      <li><code>/login</code> — Customer login</li>
+      <li><code>/register</code> — Customer registration</li>
+      <li><code>/seller/register</code> — Seller registration</li>
+      <li><code>/cart</code> — Shopping cart</li>
+      <li><code>/checkout</code> — Checkout form</li>
+      <li><code>/payment</code> — Payment processing</li>
+      <li><code>/orders</code> — Customer order history</li>
+      <li><code>/profile</code> — Customer profile management</li>
+    </ul>
+
+    <h5>Admin / Seller</h5>
+    <ul>
+      <li><code>/admin/login</code> — Admin & Seller login</li>
+      <li><code>/admin/dashboard</code> — Overview dashboard with business statistics</li>
+      <li><code>/admin/products</code> — Product catalog management</li>
+      <li><code>/admin/orders</code> — Order fulfillment and management</li>
+      <li><code>/admin/categories</code> — Category hierarchy management</li>
+      <li><code>/admin/customers</code> — Customer management</li>
+      <li><code>/admin/payments</code> — Transaction and payment records</li>
+      <li><code>/admin/analytics</code> — Business intelligence and analytics</li>
+      <li><code>/admin/inventory</code> — Stock and inventory tracking</li>
+    </ul>
+
+    <h5>Actuator & Monitoring</h5>
+    <ul>
+      <li><code>/actuator/health</code> — Health check endpoint (requires HTTP Basic authentication with admin credentials)</li>
+    </ul>
+
+    <hr class="my-4">
+
+    <h3>Docker & Deployment Status</h3>
+    <p>The project features a verified multi-container architecture via <code>docker-compose.yml</code>, orchestrating the Spring Boot application (port 8080), MySQL 8.0 (port 3306), and phpMyAdmin (port 8085) with isolated networking, persistent database volumes, and healthchecks.</p>
+
+    <hr class="my-4">
+
+    <h3>Course Documentation (DOCX References)</h3>
+    <p>Authoritative chapter documents located in the <code>docs/</code> directory:</p>
+    <ul>
+      <li><strong>Chapter 1:</strong> The Modern Spring Landscape</li>
+      <li><strong>Chapter 2:</strong> Dynamic Interfaces with Thymeleaf and Bootstrap</li>
+      <li><strong>Chapter 3:</strong> Persistence with Relational Databases</li>
+      <li><strong>Chapter 4:</strong> Advanced Relationships and Migrations</li>
+      <li><strong>Chapter 5:</strong> Spring Security and Identity</li>
+      <li><strong>Chapter 6:</strong> Testing Strategy for Modern Apps</li>
+      <li><strong>Chapter 7:</strong> Production Readiness, Cloud Native, and Spring AI</li>
+    </ul>
+
+    <hr class="my-4">
+
+    <h3>Author</h3>
+    <ul>
+      <li><strong>Created by:</strong> Rejwana Akter</li>
+      <li><strong>Live Showcase:</strong> <a href="https://rejwana121.github.io/spark-mart/">https://rejwana121.github.io/spark-mart/</a></li>
+      <li><strong>Repository:</strong> <a href="https://github.com/rejwana121/spark-mart">https://github.com/rejwana121/spark-mart</a></li>
+    </ul>
+  </div>
+</body>
+</html>
