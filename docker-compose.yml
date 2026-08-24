@@ -1,34 +1,42 @@
 services:
+  app:
+    build: .
+    ports:
+      - "8080:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SERVER_PORT=8081
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/sparkmart?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      mysql:
+        condition: service_healthy
+
   mysql:
     image: mysql:8.0
     environment:
-      MYSQL_DATABASE: sparkmart
-      MYSQL_ROOT_PASSWORD: root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=sparkmart
     ports:
       - "3306:3306"
     volumes:
       - sparkmart_mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
       interval: 5s
       timeout: 5s
       retries: 10
 
-  app:
-    build: .
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
     ports:
-      - "8081:8081"
+      - "8085:80"
     environment:
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_NAME: sparkmart
-      DB_USERNAME: root
-      DB_PASSWORD: root
-      SPARKMART_ADMIN_USERNAME: admin@sparkmart.com
-      SPARKMART_ADMIN_PASSWORD: admin123
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
 
 volumes:
   sparkmart_mysql_data:
