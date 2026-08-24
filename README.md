@@ -57,6 +57,8 @@ docker compose up --build -d
 | `SPARKMART_ADMIN_USERNAME` | `admin@sparkmart.com` | Default admin email |
 | `SPARKMART_ADMIN_PASSWORD` | `admin123` | Default admin password |
 
+---
+
 ### Profiles
 * **`default` / `dev`:** Connects to local environment configurations.
 * **`prod`:** Configured for isolated container execution via environment variables.
@@ -120,5 +122,5 @@ Authoritative chapter documents located in the `docs/` directory:
 
 ### Author
 * **Created by:** Rejwana Akter
-* **Live Showcase:** [https://rejwana121.github.io/spark-mart/](https://rejwana121.github.io/spark-mart/)
-* **Repository:** [https://github.com/rejwana121/spark-mart](https://github.com/rejwana121/spark-mart)
+* **Live Showcase:** https://rejwana121.github.io/spark-mart/
+* **Repository:** https://github.com/rejwana121/spark-mart
