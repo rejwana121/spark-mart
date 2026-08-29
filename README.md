@@ -1,4 +1,6 @@
 # Spark Mart
+> **Submitted by:** Rejwana Akter | **ID:** 241-16-020  
+> **Department:** CIS, Daffodil International University
 
 A full-stack e-commerce web application built with **Spring Boot 4.1**, **Thymeleaf**, **Spring Data JPA**, **Spring Security**, and **MySQL 8.0** — containerized and verified using **Docker Compose**. The project implements a Daraz-inspired storefront with customer, seller, and admin roles, cart/checkout/payment flows, order management, and an AI product suggestion feature.
 
